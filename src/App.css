@@ -247,3 +247,56 @@
   font-size: 11px;
   color: var(--text-muted);
 }
+
+.dispatch-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--warning);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.dispatch-text {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--text-bright);
+  background-color: rgba(255, 171, 0, 0.1);
+  border: 1px solid rgba(255, 171, 0, 0.3);
+  padding: 16px;
+  border-radius: 6px;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.option-btn {
+  background: var(--bg-panel);
+  color: var(--text-bright);
+  border: 1px solid var(--border);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.2);
+}
+
+.option-btn:active {
+  transform: translateY(1px);
+}

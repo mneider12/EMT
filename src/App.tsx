@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
+type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL';
+
 function App() {
   const [timestamp, setTimestamp] = useState('');
+  const [phase, setPhase] = useState<SimulationPhase>('INITIALIZATION');
 
   useEffect(() => {
     const updateTime = () => {
@@ -78,15 +81,51 @@ function App() {
 
           {/* Message Box */}
           <div className="message-box">
-            <h1 className="hello-world-title">Hello, World!</h1>
-            <p className="hello-world-desc">
-              System initialization complete. The EMT Response Training Simulator is online and ready. 
-              In subsequent phases, you will be able to assess clinical presentations, perform physical exams, 
-              administer interventions, and coordinate patient transport according to NREMT guidelines.
-            </p>
-            <button className="start-btn" onClick={() => alert("Simulation Engine Starting...")}>
-              Initialize Simulation
-            </button>
+            {phase === 'INITIALIZATION' && (
+              <>
+                <h1 className="hello-world-title">Hello, World!</h1>
+                <p className="hello-world-desc">
+                  System initialization complete. The EMT Response Training Simulator is online and ready. 
+                  In subsequent phases, you will be able to assess clinical presentations, perform physical exams, 
+                  administer interventions, and coordinate patient transport according to NREMT guidelines.
+                </p>
+                <button className="start-btn" onClick={() => setPhase('DISPATCH')}>
+                  Initialize Simulation
+                </button>
+              </>
+            )}
+
+            {phase === 'DISPATCH' && (
+              <>
+                <h2 className="dispatch-title">Incoming Dispatch</h2>
+                <div className="dispatch-text">
+                  "Respond to an unresponsive adult. Caller reports patient is not breathing and has no pulse. Police and Fire are en route."
+                </div>
+                <button className="start-btn" onClick={() => setPhase('SCENE_ARRIVAL')}>
+                  Arrive on Scene
+                </button>
+              </>
+            )}
+
+            {phase === 'SCENE_ARRIVAL' && (
+              <>
+                <h2 className="dispatch-title">Scene Arrival</h2>
+                <p className="hello-world-desc">
+                  You have arrived on scene. Police are securing the area. What are your first actions?
+                </p>
+                <div className="options-grid">
+                  <button className="option-btn" onClick={() => alert('BSI donned. Scene is secure.')}>
+                    Don BSI & PPE
+                  </button>
+                  <button className="option-btn" onClick={() => alert('AED and Jump Bag retrieved.')}>
+                    Grab AED & Jump Bag
+                  </button>
+                  <button className="option-btn" onClick={() => alert('Approaching patient...')}>
+                    Assess Patient
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
