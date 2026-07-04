@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL' | 'PPE_SELECTION';
+type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL' | 'PPE_SELECTION' | 'EQUIPMENT_SELECTION';
 
 const AVAILABLE_PPE = [
   'Nitrile Gloves',
@@ -13,14 +13,28 @@ const AVAILABLE_PPE = [
   'Medical Gown'
 ];
 
+const AVAILABLE_EQUIPMENT = [
+  'O2 bag',
+  'Trauma bag',
+  'Oxygen cylinder',
+  'OB kit'
+];
+
 function App() {
   const [timestamp, setTimestamp] = useState('');
   const [phase, setPhase] = useState<SimulationPhase>('INITIALIZATION');
   const [selectedPPE, setSelectedPPE] = useState<string[]>([]);
+  const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [completedActions, setCompletedActions] = useState<string[]>([]);
 
   const togglePPE = (item: string) => {
     setSelectedPPE(prev => 
+      prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
+    );
+  };
+
+  const toggleEquipment = (item: string) => {
+    setSelectedEquipment(prev => 
       prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
     );
   };
@@ -140,12 +154,9 @@ function App() {
                   </button>
                   <button 
                     className={`option-btn ${completedActions.includes('EQUIPMENT') ? 'action-completed' : ''}`}
-                    onClick={() => {
-                      alert('AED and Jump Bag retrieved.');
-                      if (!completedActions.includes('EQUIPMENT')) setCompletedActions(prev => [...prev, 'EQUIPMENT']);
-                    }}
+                    onClick={() => setPhase('EQUIPMENT_SELECTION')}
                   >
-                    Grab AED & Jump Bag
+                    Select Equipment
                   </button>
                   <button 
                     className="option-btn" 
@@ -183,6 +194,36 @@ function App() {
                   className="start-btn" 
                   onClick={() => {
                     if (!completedActions.includes('PPE')) setCompletedActions(prev => [...prev, 'PPE']);
+                    setPhase('SCENE_ARRIVAL');
+                  }}
+                  style={{ marginTop: '24px' }}
+                >
+                  Confirm Selection
+                </button>
+              </>
+            )}
+
+            {phase === 'EQUIPMENT_SELECTION' && (
+              <>
+                <h2 className="dispatch-title">Select Equipment</h2>
+                <p className="hello-world-desc">
+                  Select the equipment you want to bring from the rig to the scene.
+                </p>
+                <div className="options-grid">
+                  {AVAILABLE_EQUIPMENT.map(item => (
+                    <button 
+                      key={item}
+                      className={`option-btn ${selectedEquipment.includes(item) ? 'selected' : ''}`}
+                      onClick={() => toggleEquipment(item)}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  className="start-btn" 
+                  onClick={() => {
+                    if (!completedActions.includes('EQUIPMENT')) setCompletedActions(prev => [...prev, 'EQUIPMENT']);
                     setPhase('SCENE_ARRIVAL');
                   }}
                   style={{ marginTop: '24px' }}
