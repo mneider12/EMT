@@ -1,24 +1,9 @@
 import { useState, useEffect } from 'react';
+import type { SimulationPhase } from './types/scenario';
+import { VitalsMonitor } from './components/VitalsMonitor';
+import { InventoryHUD } from './components/InventoryHUD';
+import { ScenarioScreen } from './components/ScenarioScreen';
 import './App.css';
-
-type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL' | 'PPE_SELECTION' | 'EQUIPMENT_SELECTION';
-
-const AVAILABLE_PPE = [
-  'Nitrile Gloves',
-  'Surgical Mask',
-  'N95 Mask',
-  'Respirator',
-  'Face Shield',
-  'Safety Glasses',
-  'Medical Gown'
-];
-
-const AVAILABLE_EQUIPMENT = [
-  'O2 bag',
-  'Trauma bag',
-  'Oxygen cylinder',
-  'OB kit'
-];
 
 function App() {
   const [timestamp, setTimestamp] = useState('');
@@ -60,212 +45,25 @@ function App() {
 
         {/* Body */}
         <div className="monitor-body">
-          {/* ECG Screen */}
-          <div className="ecg-screen">
-            <div className="ecg-grid"></div>
-            <svg className="ecg-line" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path
-                className="ecg-path"
-                d="M 0,50 L 10,50 L 15,50 L 20,40 L 23,60 L 26,50 L 35,50 L 38,30 L 41,75 L 44,50 L 46,53 L 48,47 L 50,50 L 65,50 L 70,50 L 75,40 L 78,60 L 81,50 L 90,50 L 93,30 L 96,75 L 100,50"
-              />
-            </svg>
-          </div>
-
-          {/* Vitals Grid */}
-          <div className="vitals-grid">
-            {/* Heart Rate */}
-            <div className="vital-card pulse">
-              <span className="vital-label">HR</span>
-              <div className="vital-value-container">
-                <span className="vital-value">80</span>
-                <span className="vital-unit">bpm</span>
-              </div>
-              <span className="heart-icon">♥</span>
-            </div>
-
-            {/* Blood Pressure */}
-            <div className="vital-card blood-pressure">
-              <span className="vital-label">BP</span>
-              <div className="vital-value-container">
-                <span className="vital-value">120/80</span>
-                <span className="vital-unit">mmHg</span>
-              </div>
-            </div>
-
-            {/* SpO2 */}
-            <div className="vital-card spo2">
-              <span className="vital-label">SpO2</span>
-              <div className="vital-value-container">
-                <span className="vital-value">98</span>
-                <span className="vital-unit">%</span>
-              </div>
-            </div>
-
-            {/* Respiratory Rate */}
-            <div className="vital-card temp">
-              <span className="vital-label">RR</span>
-              <div className="vital-value-container">
-                <span className="vital-value">16</span>
-                <span className="vital-unit">/min</span>
-              </div>
-            </div>
-          </div>
+          <VitalsMonitor />
 
           {/* Scenario Container */}
           <div className="scenario-container">
-            {/* Inventory HUD */}
-            <div className="inventory-hud">
-              <h3 className="inventory-title">Inventory</h3>
-              
-              <div className="inventory-section">
-                <h4 className="inventory-subtitle">PPE</h4>
-                <div className="inventory-list">
-                  {selectedPPE.length > 0 ? (
-                    selectedPPE.map(item => (
-                      <div key={item} className="inventory-item ppe-item">{item}</div>
-                    ))
-                  ) : (
-                    <div className="inventory-item empty">None</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="inventory-section">
-                <h4 className="inventory-subtitle">Equipment</h4>
-                <div className="inventory-list">
-                  {selectedEquipment.length > 0 ? (
-                    selectedEquipment.map(item => (
-                      <button key={item} className="inventory-item equipment-item" onClick={() => alert(`Using ${item}...`)}>{item}</button>
-                    ))
-                  ) : (
-                    <div className="inventory-item empty">None</div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Message Box */}
-            <div className="message-box">
-              {phase === 'INITIALIZATION' && (
-              <>
-                <h1 className="hello-world-title">Hello, World!</h1>
-                <p className="hello-world-desc">
-                  System initialization complete. The EMT Response Training Simulator is online and ready. 
-                  In subsequent phases, you will be able to assess clinical presentations, perform physical exams, 
-                  administer interventions, and coordinate patient transport according to NREMT guidelines.
-                </p>
-                <button className="start-btn" onClick={() => setPhase('DISPATCH')}>
-                  Initialize Simulation
-                </button>
-              </>
-            )}
-
-            {phase === 'DISPATCH' && (
-              <>
-                <h2 className="dispatch-title">Incoming Dispatch</h2>
-                <div className="dispatch-text">
-                  "Respond to an unresponsive adult. Caller reports patient is not breathing and has no pulse. Police and Fire are en route."
-                </div>
-                <button className="start-btn" onClick={() => setPhase('SCENE_ARRIVAL')}>
-                  Arrive on Scene
-                </button>
-              </>
-            )}
-
-            {phase === 'SCENE_ARRIVAL' && (
-              <>
-                <h2 className="dispatch-title">Scene Arrival</h2>
-                <p className="hello-world-desc">
-                  You have arrived on scene. Police are securing the area. What are your first actions?
-                </p>
-                <div className="options-grid">
-                  <button 
-                    className={`option-btn ${completedActions.includes('PPE') ? 'action-completed' : ''}`}
-                    onClick={() => setPhase('PPE_SELECTION')}
-                  >
-                    Don BSI & PPE
-                  </button>
-                  <button 
-                    className={`option-btn ${completedActions.includes('EQUIPMENT') ? 'action-completed' : ''}`}
-                    onClick={() => setPhase('EQUIPMENT_SELECTION')}
-                  >
-                    Select Equipment
-                  </button>
-                  <button 
-                    className="option-btn" 
-                    onClick={() => {
-                      if (!completedActions.includes('PPE')) {
-                        alert('WARNING: Approaching without ensuring BSI first!');
-                      }
-                      alert('Moving to Assess Patient phase... (To be implemented)');
-                    }}
-                  >
-                    Assess Patient
-                  </button>
-                </div>
-              </>
-            )}
-
-            {phase === 'PPE_SELECTION' && (
-              <>
-                <h2 className="dispatch-title">Select PPE</h2>
-                <p className="hello-world-desc">
-                  Select the appropriate Personal Protective Equipment for this scenario.
-                </p>
-                <div className="options-grid">
-                  {AVAILABLE_PPE.map(item => (
-                    <button 
-                      key={item}
-                      className={`option-btn ${selectedPPE.includes(item) ? 'selected' : ''}`}
-                      onClick={() => togglePPE(item)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <button 
-                  className="start-btn" 
-                  onClick={() => {
-                    if (!completedActions.includes('PPE')) setCompletedActions(prev => [...prev, 'PPE']);
-                    setPhase('SCENE_ARRIVAL');
-                  }}
-                  style={{ marginTop: '24px' }}
-                >
-                  Confirm Selection
-                </button>
-              </>
-            )}
-
-            {phase === 'EQUIPMENT_SELECTION' && (
-              <>
-                <h2 className="dispatch-title">Select Equipment</h2>
-                <p className="hello-world-desc">
-                  Select the equipment you want to bring from the rig to the scene.
-                </p>
-                <div className="options-grid">
-                  {AVAILABLE_EQUIPMENT.map(item => (
-                    <button 
-                      key={item}
-                      className={`option-btn ${selectedEquipment.includes(item) ? 'selected' : ''}`}
-                      onClick={() => toggleEquipment(item)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <button 
-                  className="start-btn" 
-                  onClick={() => {
-                    if (!completedActions.includes('EQUIPMENT')) setCompletedActions(prev => [...prev, 'EQUIPMENT']);
-                    setPhase('SCENE_ARRIVAL');
-                  }}
-                  style={{ marginTop: '24px' }}
-                >
-                  Confirm Selection
-                </button>
-              </>
-            )}
-          </div>
+            <InventoryHUD 
+              selectedPPE={selectedPPE} 
+              selectedEquipment={selectedEquipment} 
+            />
+            
+            <ScenarioScreen 
+              phase={phase}
+              setPhase={setPhase}
+              selectedPPE={selectedPPE}
+              togglePPE={togglePPE}
+              selectedEquipment={selectedEquipment}
+              toggleEquipment={toggleEquipment}
+              completedActions={completedActions}
+              setCompletedActions={setCompletedActions}
+            />
           </div>
         </div>
 

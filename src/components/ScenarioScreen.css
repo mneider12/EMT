@@ -1,0 +1,130 @@
+.message-box {
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.hello-world-title {
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, var(--text-bright) 30%, var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.hello-world-desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, #0099ff 100%);
+  color: #020304;
+  border: none;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--primary-glow);
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 229, 255, 0.4);
+}
+
+.start-btn:active {
+  transform: translateY(1px);
+}
+
+.dispatch-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--warning);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.dispatch-text {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--text-bright);
+  background-color: rgba(255, 171, 0, 0.1);
+  border: 1px solid rgba(255, 171, 0, 0.3);
+  padding: 16px;
+  border-radius: 6px;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.option-btn {
+  background: var(--bg-panel);
+  color: var(--text-bright);
+  border: 1px solid var(--border);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.2);
+}
+
+.option-btn:active {
+  transform: translateY(1px);
+}
+
+.option-btn.selected {
+  background: rgba(0, 229, 255, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.option-btn.action-completed {
+  border-left: 4px solid var(--success);
+  position: relative;
+}
+
+.option-btn.action-completed::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: var(--success);
+  font-size: 16px;
+  font-weight: bold;
+}
