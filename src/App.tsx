@@ -111,9 +111,42 @@ function App() {
             </div>
           </div>
 
-          {/* Message Box */}
-          <div className="message-box">
-            {phase === 'INITIALIZATION' && (
+          {/* Scenario Container */}
+          <div className="scenario-container">
+            {/* Inventory HUD */}
+            <div className="inventory-hud">
+              <h3 className="inventory-title">Inventory</h3>
+              
+              <div className="inventory-section">
+                <h4 className="inventory-subtitle">PPE</h4>
+                <div className="inventory-list">
+                  {selectedPPE.length > 0 ? (
+                    selectedPPE.map(item => (
+                      <div key={item} className="inventory-item ppe-item">{item}</div>
+                    ))
+                  ) : (
+                    <div className="inventory-item empty">None</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="inventory-section">
+                <h4 className="inventory-subtitle">Equipment</h4>
+                <div className="inventory-list">
+                  {selectedEquipment.length > 0 ? (
+                    selectedEquipment.map(item => (
+                      <button key={item} className="inventory-item equipment-item" onClick={() => alert(`Using ${item}...`)}>{item}</button>
+                    ))
+                  ) : (
+                    <div className="inventory-item empty">None</div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Message Box */}
+            <div className="message-box">
+              {phase === 'INITIALIZATION' && (
               <>
                 <h1 className="hello-world-title">Hello, World!</h1>
                 <p className="hello-world-desc">
@@ -232,6 +265,7 @@ function App() {
                 </button>
               </>
             )}
+          </div>
           </div>
         </div>
 
