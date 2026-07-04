@@ -1,8 +1,10 @@
-import { AVAILABLE_PPE, AVAILABLE_EQUIPMENT } from '../types/scenario';
+import { useState } from 'react';
+import { type SimulationPhase, AVAILABLE_PPE, AVAILABLE_EQUIPMENT } from '../types/scenario';
 import { useScenario } from '../context/ScenarioContext';
 import './ScenarioScreen.css';
 
 export function ScenarioScreen() {
+  const [showScenarioList, setShowScenarioList] = useState(false);
   const {
     phase,
     setPhase,
@@ -16,16 +18,30 @@ export function ScenarioScreen() {
 
   return (
     <div className="message-box">
-      {phase === 'INITIALIZATION' && (
+      {phase === 'INITIALIZATION' && !showScenarioList && (
         <>
-          <h1 className="hello-world-title">Hello, World!</h1>
-          <p className="hello-world-desc">
-            System initialization complete. The EMT Response Training Simulator is online and ready. 
-            In subsequent phases, you will be able to assess clinical presentations, perform physical exams, 
-            administer interventions, and coordinate patient transport according to NREMT guidelines.
-          </p>
-          <button className="start-btn" onClick={() => setPhase('DISPATCH')}>
-            Initialize Simulation
+          <h1 className="scenario-title" style={{ fontSize: '36px', marginBottom: '16px' }}>NREMT Simulator</h1>
+          <div className="options-grid" style={{ width: '100%', maxWidth: '500px' }}>
+            <button className="option-btn" onClick={() => setShowScenarioList(true)}>
+              Select Scenario
+            </button>
+            <button className="option-btn" onClick={() => setPhase('DISPATCH')}>
+              Initiate Dispatch (Random)
+            </button>
+          </div>
+        </>
+      )}
+
+      {phase === 'INITIALIZATION' && showScenarioList && (
+        <>
+          <h2 className="dispatch-title">Select Scenario</h2>
+          <div className="options-grid" style={{ width: '100%', maxWidth: '500px' }}>
+            <button className="option-btn" onClick={() => setPhase('DISPATCH')}>
+              Unresponsive Adult CPR
+            </button>
+          </div>
+          <button className="start-btn" style={{ marginTop: '24px' }} onClick={() => setShowScenarioList(false)}>
+            Back
           </button>
         </>
       )}
@@ -45,7 +61,7 @@ export function ScenarioScreen() {
       {phase === 'SCENE_ARRIVAL' && (
         <>
           <h2 className="dispatch-title">Scene Arrival</h2>
-          <p className="hello-world-desc">
+          <p className="scenario-desc">
             You have arrived on scene. Police are securing the area. What are your first actions?
           </p>
           <div className="options-grid">
@@ -79,7 +95,7 @@ export function ScenarioScreen() {
       {phase === 'PPE_SELECTION' && (
         <>
           <h2 className="dispatch-title">Select PPE</h2>
-          <p className="hello-world-desc">
+          <p className="scenario-desc">
             Select the appropriate Personal Protective Equipment for this scenario.
           </p>
           <div className="options-grid">
@@ -109,7 +125,7 @@ export function ScenarioScreen() {
       {phase === 'EQUIPMENT_SELECTION' && (
         <>
           <h2 className="dispatch-title">Select Equipment</h2>
-          <p className="hello-world-desc">
+          <p className="scenario-desc">
             Select the equipment you want to bring from the rig to the scene.
           </p>
           <div className="options-grid">

@@ -12,17 +12,18 @@
   flex: 1;
 }
 
-.hello-world-title {
+.scenario-title {
   font-size: 42px;
   font-weight: 800;
   margin: 0;
   background: linear-gradient(135deg, var(--text-bright) 30%, var(--primary));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -1px;
 }
 
-.hello-world-desc {
+.scenario-desc {
   font-size: 16px;
   color: var(--text-muted);
   max-width: 500px;
