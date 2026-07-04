@@ -1,11 +1,29 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL';
+type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL' | 'PPE_SELECTION';
+
+const AVAILABLE_PPE = [
+  'Nitrile Gloves',
+  'Surgical Mask',
+  'N95 Mask',
+  'Respirator',
+  'Face Shield',
+  'Safety Glasses',
+  'Medical Gown'
+];
 
 function App() {
   const [timestamp, setTimestamp] = useState('');
   const [phase, setPhase] = useState<SimulationPhase>('INITIALIZATION');
+  const [selectedPPE, setSelectedPPE] = useState<string[]>([]);
+  const [completedActions, setCompletedActions] = useState<string[]>([]);
+
+  const togglePPE = (item: string) => {
+    setSelectedPPE(prev => 
+      prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
+    );
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -114,16 +132,63 @@ function App() {
                   You have arrived on scene. Police are securing the area. What are your first actions?
                 </p>
                 <div className="options-grid">
-                  <button className="option-btn" onClick={() => alert('BSI donned. Scene is secure.')}>
+                  <button 
+                    className={`option-btn ${completedActions.includes('PPE') ? 'action-completed' : ''}`}
+                    onClick={() => setPhase('PPE_SELECTION')}
+                  >
                     Don BSI & PPE
                   </button>
-                  <button className="option-btn" onClick={() => alert('AED and Jump Bag retrieved.')}>
+                  <button 
+                    className={`option-btn ${completedActions.includes('EQUIPMENT') ? 'action-completed' : ''}`}
+                    onClick={() => {
+                      alert('AED and Jump Bag retrieved.');
+                      if (!completedActions.includes('EQUIPMENT')) setCompletedActions(prev => [...prev, 'EQUIPMENT']);
+                    }}
+                  >
                     Grab AED & Jump Bag
                   </button>
-                  <button className="option-btn" onClick={() => alert('Approaching patient...')}>
+                  <button 
+                    className="option-btn" 
+                    onClick={() => {
+                      if (!completedActions.includes('PPE')) {
+                        alert('WARNING: Approaching without ensuring BSI first!');
+                      }
+                      alert('Moving to Assess Patient phase... (To be implemented)');
+                    }}
+                  >
                     Assess Patient
                   </button>
                 </div>
+              </>
+            )}
+
+            {phase === 'PPE_SELECTION' && (
+              <>
+                <h2 className="dispatch-title">Select PPE</h2>
+                <p className="hello-world-desc">
+                  Select the appropriate Personal Protective Equipment for this scenario.
+                </p>
+                <div className="options-grid">
+                  {AVAILABLE_PPE.map(item => (
+                    <button 
+                      key={item}
+                      className={`option-btn ${selectedPPE.includes(item) ? 'selected' : ''}`}
+                      onClick={() => togglePPE(item)}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  className="start-btn" 
+                  onClick={() => {
+                    if (!completedActions.includes('PPE')) setCompletedActions(prev => [...prev, 'PPE']);
+                    setPhase('SCENE_ARRIVAL');
+                  }}
+                  style={{ marginTop: '24px' }}
+                >
+                  Confirm Selection
+                </button>
               </>
             )}
           </div>
