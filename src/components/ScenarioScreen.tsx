@@ -1,27 +1,19 @@
-import { type SimulationPhase, AVAILABLE_PPE, AVAILABLE_EQUIPMENT } from '../types/scenario';
+import { AVAILABLE_PPE, AVAILABLE_EQUIPMENT } from '../types/scenario';
+import { useScenario } from '../context/ScenarioContext';
 import './ScenarioScreen.css';
 
-interface ScenarioScreenProps {
-  phase: SimulationPhase;
-  setPhase: (phase: SimulationPhase) => void;
-  selectedPPE: string[];
-  togglePPE: (item: string) => void;
-  selectedEquipment: string[];
-  toggleEquipment: (item: string) => void;
-  completedActions: string[];
-  setCompletedActions: React.Dispatch<React.SetStateAction<string[]>>;
-}
+export function ScenarioScreen() {
+  const {
+    phase,
+    setPhase,
+    selectedPPE,
+    togglePPE,
+    selectedEquipment,
+    toggleEquipment,
+    completedActions,
+    markActionCompleted
+  } = useScenario();
 
-export function ScenarioScreen({
-  phase,
-  setPhase,
-  selectedPPE,
-  togglePPE,
-  selectedEquipment,
-  toggleEquipment,
-  completedActions,
-  setCompletedActions
-}: ScenarioScreenProps) {
   return (
     <div className="message-box">
       {phase === 'INITIALIZATION' && (
@@ -104,7 +96,7 @@ export function ScenarioScreen({
           <button 
             className="start-btn" 
             onClick={() => {
-              if (!completedActions.includes('PPE')) setCompletedActions(prev => [...prev, 'PPE']);
+              markActionCompleted('PPE');
               setPhase('SCENE_ARRIVAL');
             }}
             style={{ marginTop: '24px' }}
@@ -134,7 +126,7 @@ export function ScenarioScreen({
           <button 
             className="start-btn" 
             onClick={() => {
-              if (!completedActions.includes('EQUIPMENT')) setCompletedActions(prev => [...prev, 'EQUIPMENT']);
+              markActionCompleted('EQUIPMENT');
               setPhase('SCENE_ARRIVAL');
             }}
             style={{ marginTop: '24px' }}

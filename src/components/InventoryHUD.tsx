@@ -1,11 +1,9 @@
+import { useScenario } from '../context/ScenarioContext';
 import './InventoryHUD.css';
 
-interface InventoryHUDProps {
-  selectedPPE: string[];
-  selectedEquipment: string[];
-}
+export function InventoryHUD() {
+  const { selectedPPE, selectedEquipment } = useScenario();
 
-export function InventoryHUD({ selectedPPE, selectedEquipment }: InventoryHUDProps) {
   return (
     <div className="inventory-hud">
       <h3 className="inventory-title">Inventory</h3>
