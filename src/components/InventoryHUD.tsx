@@ -1,8 +1,17 @@
+import { useState } from 'react';
 import { useScenario } from '../context/ScenarioContext';
 import './InventoryHUD.css';
 
 export function InventoryHUD() {
-  const { selectedPPE, selectedEquipment, impressionRevealed } = useScenario();
+  const { 
+    selectedPPE, 
+    selectedEquipment, 
+    activeEquipment,
+    setActiveEquipment,
+    bagContents,
+    setBagContents
+  } = useScenario();
+  const [isBagOpen, setIsBagOpen] = useState(false);
 
   return (
     <div className="side-hud">
@@ -27,7 +36,37 @@ export function InventoryHUD() {
         <div className="inventory-list">
           {selectedEquipment.length > 0 ? (
             selectedEquipment.map(item => (
-              <button key={item} className="inventory-item equipment-item" onClick={() => alert(`Using ${item}...`)}>{item}</button>
+              <div key={item}>
+                <button 
+                  className="inventory-item equipment-item" 
+                  onClick={() => {
+                    if (item === 'Trauma bag') {
+                      setIsBagOpen(!isBagOpen);
+                    } else {
+                      alert(`Using ${item}...`);
+                    }
+                  }}
+                >
+                  {item}
+                </button>
+                {item === 'Trauma bag' && isBagOpen && bagContents.length > 0 && (
+                  <div style={{ paddingLeft: '16px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {bagContents.map(subItem => (
+                      <button
+                        key={subItem}
+                        className="inventory-item equipment-item"
+                        style={{ borderLeft: '2px solid var(--primary)' }}
+                        onClick={() => {
+                          setActiveEquipment(subItem);
+                          setBagContents(bagContents.filter(i => i !== subItem));
+                        }}
+                      >
+                        {subItem}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))
           ) : (
             <div className="inventory-item empty">None</div>
@@ -35,6 +74,18 @@ export function InventoryHUD() {
         </div>
       </div>
       </div>
+
+      {activeEquipment && (
+        <div className="hud-panel">
+          <h3 className="inventory-title">Active</h3>
+          <div className="inventory-section">
+            <h4 className="inventory-subtitle">In Hand</h4>
+            <div className="inventory-list">
+              <div className="inventory-item ppe-item">{activeEquipment}</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

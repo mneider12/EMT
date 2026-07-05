@@ -16,7 +16,9 @@ export function ScenarioScreen() {
     completedActions,
     markActionCompleted,
     setHeartRateMeasured,
-    setImpressionRevealed
+    setImpressionRevealed,
+    activeEquipment,
+    setBloodPressureMeasured
   } = useScenario();
 
   return (
@@ -180,6 +182,14 @@ export function ScenarioScreen() {
                 >
                   Check Pulse (Heart Rate)
                 </button>
+                {activeEquipment === 'Blood Pressure Cuff' && (
+                  <button 
+                    className="option-btn" 
+                    onClick={() => setAssessmentAction('check_bp')}
+                  >
+                    Assess Blood Pressure
+                  </button>
+                )}
               </div>
               <button 
                 className="start-btn" 
@@ -208,6 +218,31 @@ export function ScenarioScreen() {
                     {artery} Artery
                   </button>
                 ))}
+              </div>
+              <button 
+                className="start-btn" 
+                onClick={() => setAssessmentAction(null)}
+                style={{ marginTop: '24px' }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : assessmentAction === 'check_bp' ? (
+            <>
+              <p className="scenario-desc">
+                You are preparing to measure the blood pressure.
+              </p>
+              <div className="options-grid">
+                <button
+                  className="option-btn"
+                  onClick={() => {
+                    setBloodPressureMeasured(true);
+                    alert(`Blood pressure is absent.`);
+                    setAssessmentAction(null);
+                  }}
+                >
+                  Measure Blood Pressure
+                </button>
               </div>
               <button 
                 className="start-btn" 

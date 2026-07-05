@@ -2,7 +2,7 @@ import './VitalsMonitor.css';
 import { useScenario } from '../context/ScenarioContext';
 
 export function VitalsMonitor() {
-  const { heartRateMeasured, impressionRevealed } = useScenario();
+  const { heartRateMeasured, impressionRevealed, bloodPressureMeasured } = useScenario();
 
   return (
     <>
@@ -22,7 +22,7 @@ export function VitalsMonitor() {
         <div className="vital-card blood-pressure">
           <span className="vital-label">BP</span>
           <div className="vital-value-container">
-            <span className="vital-value">120/80</span>
+            <span className="vital-value">{bloodPressureMeasured ? 'Absent' : '--/--'}</span>
             <span className="vital-unit">mmHg</span>
           </div>
         </div>
