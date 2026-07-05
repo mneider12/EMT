@@ -47,22 +47,21 @@ export function VitalsMonitor() {
       </div>
 
       {/* General Impression */}
-      {impressionRevealed && (
-        <div className="hud-panel" style={{ marginTop: '24px', flexDirection: 'row', justifyContent: 'space-around', padding: '16px 24px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>LOC</span>
-            <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>Unresponsive</span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>Skin Signs</span>
-            <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>Pale</span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>WOB</span>
-            <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>Apneic</span>
-          </div>
+      {/* General Impression */}
+      <div className="hud-panel" style={{ marginTop: '24px', flexDirection: 'row', justifyContent: 'space-around', padding: '16px 24px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>LOC</span>
+          <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>{impressionRevealed ? 'Unresponsive' : '--'}</span>
         </div>
-      )}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>Skin Signs</span>
+          <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>{impressionRevealed ? 'Pale' : '--'}</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>WOB</span>
+          <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>{impressionRevealed ? 'Apneic' : '--'}</span>
+        </div>
+      </div>
     </>
   );
 }
