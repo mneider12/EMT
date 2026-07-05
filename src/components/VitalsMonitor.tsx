@@ -2,10 +2,15 @@ import './VitalsMonitor.css';
 import { useScenario } from '../context/ScenarioContext';
 
 export function VitalsMonitor() {
-  const { heartRateMeasured, impressionRevealed, bloodPressureMeasured, spo2Measured, respirationMeasured } = useScenario();
+  const { heartRateMeasured, impressionRevealed, bloodPressureMeasured, spo2Measured, respirationMeasured, cprConfig } = useScenario();
 
   return (
     <>
+      {cprConfig && (
+        <div style={{ backgroundColor: 'rgba(255, 60, 60, 0.2)', border: '1px solid #ff3c3c', color: '#ff3c3c', padding: '12px', borderRadius: '8px', textAlign: 'center', fontWeight: 'bold', marginBottom: '24px', letterSpacing: '2px', textTransform: 'uppercase' }}>
+          CPR IN PROGRESS ({cprConfig.compressions}:{cprConfig.respirations})
+        </div>
+      )}
       {/* Vitals Grid */}
       <div className="vitals-grid">
         {/* Heart Rate */}

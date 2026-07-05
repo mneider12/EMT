@@ -20,8 +20,16 @@ export function ScenarioScreen() {
     appliedEquipment,
     setBloodPressureMeasured,
     setSpo2Measured,
-    setRespirationMeasured
+    setRespirationMeasured,
+    setCprConfig
   } = useScenario();
+
+  const [compressions, setCompressions] = useState<number | ''>('');
+  const [respirations, setRespirations] = useState<number | ''>('');
+  const [rateLow, setRateLow] = useState<number | ''>('');
+  const [rateHigh, setRateHigh] = useState<number | ''>('');
+  const [switchTime, setSwitchTime] = useState<number | ''>('');
+  const [switchUnit, setSwitchUnit] = useState('');
 
   return (
     <div className="message-box">
@@ -186,6 +194,12 @@ export function ScenarioScreen() {
                 </button>
                 <button 
                   className="option-btn" 
+                  onClick={() => setAssessmentAction('perform_cpr')}
+                >
+                  Perform CPR
+                </button>
+                <button 
+                  className="option-btn" 
                   onClick={() => {
                     setRespirationMeasured(true);
                     alert(`Respiration rate is absent.`);
@@ -273,6 +287,65 @@ export function ScenarioScreen() {
               >
                 Cancel
               </button>
+            </>
+          ) : assessmentAction === 'perform_cpr' ? (
+            <>
+              <p className="scenario-desc">
+                Configure CPR settings.
+              </p>
+              <div className="cpr-form" style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '400px', margin: '0 auto', textAlign: 'left' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ color: 'var(--text-bright)' }}>Compression Ratio (Compressions : Respirations)</label>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <input type="number" min="1" value={compressions} onChange={e => setCompressions(e.target.value === '' ? '' : Number(e.target.value))} style={{ width: '80px', padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }} />
+                    <span style={{ color: 'var(--text-muted)' }}>:</span>
+                    <input type="number" min="0" value={respirations} onChange={e => setRespirations(e.target.value === '' ? '' : Number(e.target.value))} style={{ width: '80px', padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }} />
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ color: 'var(--text-bright)' }}>Compression Rate (BPM)</label>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <input type="number" min="1" value={rateLow} onChange={e => setRateLow(e.target.value === '' ? '' : Number(e.target.value))} style={{ width: '80px', padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }} />
+                    <span style={{ color: 'var(--text-muted)' }}>to</span>
+                    <input type="number" min="1" value={rateHigh} onChange={e => setRateHigh(e.target.value === '' ? '' : Number(e.target.value))} style={{ width: '80px', padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }} />
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ color: 'var(--text-bright)' }}>Switch Responders Every</label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input type="number" min="1" value={switchTime} onChange={e => setSwitchTime(e.target.value === '' ? '' : Number(e.target.value))} style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }} />
+                    <select value={switchUnit} onChange={e => setSwitchUnit(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }}>
+                      <option value="" disabled>Select unit...</option>
+                      <option value="Minutes">Minutes</option>
+                      <option value="Seconds">Seconds</option>
+                      <option value="Cycles">Cycles</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+                  <button 
+                    className="option-btn" 
+                    onClick={() => {
+                      setCprConfig({ compressions, respirations, rateLow, rateHigh, switchTime, switchUnit });
+                      alert('CPR started.');
+                      setAssessmentAction(null);
+                    }}
+                    style={{ flex: 1 }}
+                  >
+                    Start CPR
+                  </button>
+                  <button 
+                    className="start-btn" 
+                    onClick={() => setAssessmentAction(null)}
+                    style={{ flex: 1 }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </>
           ) : null}
         </>
