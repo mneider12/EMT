@@ -77,9 +77,9 @@ export function InventoryHUD() {
 
       {activeEquipment && (
         <div className="hud-panel">
-          <h3 className="inventory-title">Active</h3>
+          <h3 className="inventory-title">Applied</h3>
           <div className="inventory-section">
-            <h4 className="inventory-subtitle">In Hand</h4>
+            <h4 className="inventory-subtitle">On Patient</h4>
             <div className="inventory-list">
               <div className="inventory-item ppe-item">{activeEquipment}</div>
             </div>
