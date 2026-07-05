@@ -12,8 +12,8 @@ export function VitalsMonitor() {
         <div className="vital-card pulse">
           <span className="vital-label">HR</span>
           <div className="vital-value-container">
-            <span className="vital-value">{heartRateMeasured ? '0' : '--'}</span>
-            <span className="vital-unit">bpm</span>
+            <span className="vital-value">{heartRateMeasured ? 'Absent' : '--'}</span>
+            {!heartRateMeasured && <span className="vital-unit">bpm</span>}
           </div>
           <span className="heart-icon">♥</span>
         </div>
@@ -23,7 +23,7 @@ export function VitalsMonitor() {
           <span className="vital-label">BP</span>
           <div className="vital-value-container">
             <span className="vital-value">{bloodPressureMeasured ? 'Absent' : '--/--'}</span>
-            <span className="vital-unit">mmHg</span>
+            {!bloodPressureMeasured && <span className="vital-unit">mmHg</span>}
           </div>
         </div>
 
