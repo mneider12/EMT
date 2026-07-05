@@ -5,6 +5,7 @@ import './ScenarioScreen.css';
 
 export function ScenarioScreen() {
   const [showScenarioList, setShowScenarioList] = useState(false);
+  const [assessmentAction, setAssessmentAction] = useState<string | null>(null);
   const {
     phase,
     setPhase,
@@ -13,7 +14,8 @@ export function ScenarioScreen() {
     selectedEquipment,
     toggleEquipment,
     completedActions,
-    markActionCompleted
+    markActionCompleted,
+    setHeartRateMeasured
   } = useScenario();
 
   return (
@@ -83,7 +85,7 @@ export function ScenarioScreen() {
                 if (!completedActions.includes('PPE')) {
                   alert('WARNING: Approaching without ensuring BSI first!');
                 }
-                alert('Moving to Assess Patient phase... (To be implemented)');
+                setPhase('PATIENT_ASSESSMENT');
               }}
             >
               Assess Patient
@@ -149,6 +151,61 @@ export function ScenarioScreen() {
           >
             Confirm Selection
           </button>
+        </>
+      )}
+      {phase === 'PATIENT_ASSESSMENT' && (
+        <>
+          <h2 className="dispatch-title">Patient Assessment</h2>
+          {!assessmentAction ? (
+            <>
+              <p className="scenario-desc">
+                Select an assessment to perform on the patient.
+              </p>
+              <div className="options-grid">
+                <button 
+                  className="option-btn" 
+                  onClick={() => setAssessmentAction('check_pulse')}
+                >
+                  Check Pulse (Heart Rate)
+                </button>
+              </div>
+              <button 
+                className="start-btn" 
+                onClick={() => setPhase('SCENE_ARRIVAL')}
+                style={{ marginTop: '24px' }}
+              >
+                Back to Scene Options
+              </button>
+            </>
+          ) : assessmentAction === 'check_pulse' ? (
+            <>
+              <p className="scenario-desc">
+                Select which artery to check for a pulse.
+              </p>
+              <div className="options-grid">
+                {['Carotid', 'Brachial', 'Radial'].map((artery) => (
+                  <button
+                    key={artery}
+                    className="option-btn"
+                    onClick={() => {
+                      setHeartRateMeasured(true);
+                      alert(`Checked ${artery} pulse. Pulse is absent.`);
+                      setAssessmentAction(null);
+                    }}
+                  >
+                    {artery} Artery
+                  </button>
+                ))}
+              </div>
+              <button 
+                className="start-btn" 
+                onClick={() => setAssessmentAction(null)}
+                style={{ marginTop: '24px' }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : null}
         </>
       )}
     </div>

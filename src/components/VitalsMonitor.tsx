@@ -1,6 +1,9 @@
 import './VitalsMonitor.css';
+import { useScenario } from '../context/ScenarioContext';
 
 export function VitalsMonitor() {
+  const { heartRateMeasured } = useScenario();
+
   return (
     <>
       {/* ECG Screen */}
@@ -20,7 +23,7 @@ export function VitalsMonitor() {
         <div className="vital-card pulse">
           <span className="vital-label">HR</span>
           <div className="vital-value-container">
-            <span className="vital-value">80</span>
+            <span className="vital-value">{heartRateMeasured ? '0' : '--'}</span>
             <span className="vital-unit">bpm</span>
           </div>
           <span className="heart-icon">♥</span>

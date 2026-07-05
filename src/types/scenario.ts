@@ -1,4 +1,4 @@
-export type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL' | 'PPE_SELECTION' | 'EQUIPMENT_SELECTION';
+export type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL' | 'PPE_SELECTION' | 'EQUIPMENT_SELECTION' | 'PATIENT_ASSESSMENT';
 
 export const AVAILABLE_PPE = [
   'Nitrile Gloves',
