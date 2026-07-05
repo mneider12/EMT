@@ -24,7 +24,7 @@ function App() {
         <div className="monitor-card">
           {/* Header */}
           <div className="monitor-header">
-            <div className="system-title">NREMT Scenario Trainer</div>
+            <div className="system-title">EMT Scenario Trainer</div>
             <div className="system-status">VITAL SIGNS: RUNNING</div>
           </div>
 

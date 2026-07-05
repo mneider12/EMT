@@ -20,7 +20,7 @@ export function ScenarioScreen() {
     <div className="message-box">
       {phase === 'INITIALIZATION' && !showScenarioList && (
         <>
-          <h1 className="scenario-title" style={{ fontSize: '36px', marginBottom: '16px' }}>NREMT Simulator</h1>
+          <h1 className="scenario-title" style={{ fontSize: '36px', marginBottom: '16px' }}>EMT Simulator</h1>
           <div className="options-grid" style={{ width: '100%', maxWidth: '500px' }}>
             <button className="option-btn" onClick={() => setShowScenarioList(true)}>
               Select Scenario

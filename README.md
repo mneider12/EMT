@@ -1,4 +1,4 @@
-# NREMT Scenario Trainer
+# EMT Scenario Trainer
 
 An EMT (Emergency Medical Technician) Response Training Simulator built with React, TypeScript, and Vite.
 
