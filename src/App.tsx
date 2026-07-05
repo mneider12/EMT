@@ -30,11 +30,10 @@ function App() {
 
           {/* Body */}
           <div className="monitor-body">
-            <VitalsMonitor />
+            <InventoryHUD />
 
-            {/* Scenario Container */}
-            <div className="scenario-container">
-              <InventoryHUD />
+            <div className="main-content">
+              <VitalsMonitor />
               <ScenarioScreen />
             </div>
           </div>
