@@ -6,17 +6,6 @@ export function InventoryHUD() {
 
   return (
     <div className="side-hud">
-      {impressionRevealed && (
-        <div className="hud-panel">
-          <h3 className="inventory-title">General Impression</h3>
-          <div className="inventory-list">
-            <div className="inventory-item">LOC: Unresponsive</div>
-            <div className="inventory-item">Skin: Pale</div>
-            <div className="inventory-item">WOB: Apneic</div>
-          </div>
-        </div>
-      )}
-
       <div className="hud-panel">
         <h3 className="inventory-title">Inventory</h3>
       

@@ -2,21 +2,10 @@ import './VitalsMonitor.css';
 import { useScenario } from '../context/ScenarioContext';
 
 export function VitalsMonitor() {
-  const { heartRateMeasured } = useScenario();
+  const { heartRateMeasured, impressionRevealed } = useScenario();
 
   return (
     <>
-      {/* ECG Screen */}
-      <div className="ecg-screen">
-        <div className="ecg-grid"></div>
-        <svg className="ecg-line" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path
-            className="ecg-path"
-            d="M 0,50 L 10,50 L 15,50 L 20,40 L 23,60 L 26,50 L 35,50 L 38,30 L 41,75 L 44,50 L 46,53 L 48,47 L 50,50 L 65,50 L 70,50 L 75,40 L 78,60 L 81,50 L 90,50 L 93,30 L 96,75 L 100,50"
-          />
-        </svg>
-      </div>
-
       {/* Vitals Grid */}
       <div className="vitals-grid">
         {/* Heart Rate */}
@@ -56,6 +45,24 @@ export function VitalsMonitor() {
           </div>
         </div>
       </div>
+
+      {/* General Impression */}
+      {impressionRevealed && (
+        <div className="hud-panel" style={{ marginTop: '24px', flexDirection: 'row', justifyContent: 'space-around', padding: '16px 24px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>LOC</span>
+            <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>Unresponsive</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>Skin Signs</span>
+            <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>Pale</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 'bold' }}>WOB</span>
+            <span style={{ fontSize: '16px', color: 'var(--text-bright)' }}>Apneic</span>
+          </div>
+        </div>
+      )}
     </>
   );
 }
