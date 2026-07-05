@@ -2,11 +2,23 @@ import { useScenario } from '../context/ScenarioContext';
 import './InventoryHUD.css';
 
 export function InventoryHUD() {
-  const { selectedPPE, selectedEquipment } = useScenario();
+  const { selectedPPE, selectedEquipment, impressionRevealed } = useScenario();
 
   return (
-    <div className="inventory-hud">
-      <h3 className="inventory-title">Inventory</h3>
+    <div className="side-hud">
+      {impressionRevealed && (
+        <div className="hud-panel">
+          <h3 className="inventory-title">General Impression</h3>
+          <div className="inventory-list">
+            <div className="inventory-item">LOC: Unresponsive</div>
+            <div className="inventory-item">Skin: Pale</div>
+            <div className="inventory-item">WOB: Apneic</div>
+          </div>
+        </div>
+      )}
+
+      <div className="hud-panel">
+        <h3 className="inventory-title">Inventory</h3>
       
       <div className="inventory-section">
         <h4 className="inventory-subtitle">PPE</h4>
@@ -32,6 +44,7 @@ export function InventoryHUD() {
             <div className="inventory-item empty">None</div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

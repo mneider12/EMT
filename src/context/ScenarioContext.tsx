@@ -12,6 +12,8 @@ interface ScenarioContextType {
   markActionCompleted: (action: string) => void;
   heartRateMeasured: boolean;
   setHeartRateMeasured: (measured: boolean) => void;
+  impressionRevealed: boolean;
+  setImpressionRevealed: (revealed: boolean) => void;
 }
 
 const ScenarioContext = createContext<ScenarioContextType | undefined>(undefined);
@@ -22,6 +24,7 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [completedActions, setCompletedActions] = useState<string[]>([]);
   const [heartRateMeasured, setHeartRateMeasured] = useState<boolean>(false);
+  const [impressionRevealed, setImpressionRevealed] = useState<boolean>(false);
 
   const togglePPE = (item: string) => {
     setSelectedPPE(prev => 
@@ -48,7 +51,8 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
       selectedPPE, togglePPE,
       selectedEquipment, toggleEquipment,
       completedActions, markActionCompleted,
-      heartRateMeasured, setHeartRateMeasured
+      heartRateMeasured, setHeartRateMeasured,
+      impressionRevealed, setImpressionRevealed
     }}>
       {children}
     </ScenarioContext.Provider>

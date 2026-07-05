@@ -15,7 +15,8 @@ export function ScenarioScreen() {
     toggleEquipment,
     completedActions,
     markActionCompleted,
-    setHeartRateMeasured
+    setHeartRateMeasured,
+    setImpressionRevealed
   } = useScenario();
 
   return (
@@ -155,7 +156,10 @@ export function ScenarioScreen() {
           <div className="dispatch-text">
             You see 1 patient, lying supine. Skin is pale, no noticeable breathing. The patient is not alert to you.
           </div>
-          <button className="start-btn" onClick={() => setPhase('PATIENT_ASSESSMENT')}>
+          <button className="start-btn" onClick={() => {
+            setImpressionRevealed(true);
+            setPhase('PATIENT_ASSESSMENT');
+          }}>
             Proceed to Assessment
           </button>
         </>
