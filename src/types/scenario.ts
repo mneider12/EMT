@@ -14,5 +14,6 @@ export const AVAILABLE_EQUIPMENT = [
   'O2 bag',
   'Trauma bag',
   'Oxygen cylinder',
-  'OB kit'
+  'OB kit',
+  'AED'
 ];

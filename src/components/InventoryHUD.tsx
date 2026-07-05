@@ -9,7 +9,9 @@ export function InventoryHUD() {
     appliedEquipment,
     setAppliedEquipment,
     bagContents,
-    setBagContents
+    setBagContents,
+    phase,
+    toggleEquipment
   } = useScenario();
   const [isBagOpen, setIsBagOpen] = useState(false);
 
@@ -39,11 +41,14 @@ export function InventoryHUD() {
               <div key={item}>
                 <button 
                   className="inventory-item equipment-item" 
+                  disabled={phase !== 'PATIENT_ASSESSMENT'}
                   onClick={() => {
+
                     if (item === 'Trauma bag') {
                       setIsBagOpen(!isBagOpen);
                     } else {
-                      alert(`Using ${item}...`);
+                      setAppliedEquipment([...appliedEquipment, item]);
+                      toggleEquipment(item);
                     }
                   }}
                 >
@@ -56,6 +61,7 @@ export function InventoryHUD() {
                         key={subItem}
                         className="inventory-item equipment-item"
                         style={{ borderLeft: '2px solid var(--primary)' }}
+                        disabled={phase !== 'PATIENT_ASSESSMENT'}
                         onClick={() => {
                           setAppliedEquipment([...appliedEquipment, subItem]);
                           setBagContents(bagContents.filter(i => i !== subItem));
