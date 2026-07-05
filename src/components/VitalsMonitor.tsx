@@ -2,7 +2,7 @@ import './VitalsMonitor.css';
 import { useScenario } from '../context/ScenarioContext';
 
 export function VitalsMonitor() {
-  const { heartRateMeasured, impressionRevealed, bloodPressureMeasured, spo2Measured, respirationMeasured, cprConfig } = useScenario();
+  const { vitalsAssessed, impressionRevealed, cprConfig } = useScenario();
 
   return (
     <>
@@ -17,8 +17,8 @@ export function VitalsMonitor() {
         <div className="vital-card pulse">
           <span className="vital-label">HR</span>
           <div className="vital-value-container">
-            <span className="vital-value">{heartRateMeasured ? 'Absent' : '--'}</span>
-            {!heartRateMeasured && <span className="vital-unit">bpm</span>}
+            <span className="vital-value">{vitalsAssessed.heartRate ? 'Absent' : '--'}</span>
+            {!vitalsAssessed.heartRate && <span className="vital-unit">bpm</span>}
           </div>
           <span className="heart-icon">♥</span>
         </div>
@@ -27,8 +27,8 @@ export function VitalsMonitor() {
         <div className="vital-card blood-pressure">
           <span className="vital-label">BP</span>
           <div className="vital-value-container">
-            <span className="vital-value">{bloodPressureMeasured ? 'Absent' : '--/--'}</span>
-            {!bloodPressureMeasured && <span className="vital-unit">mmHg</span>}
+            <span className="vital-value">{vitalsAssessed.bloodPressure ? 'Absent' : '--/--'}</span>
+            {!vitalsAssessed.bloodPressure && <span className="vital-unit">mmHg</span>}
           </div>
         </div>
 
@@ -36,8 +36,8 @@ export function VitalsMonitor() {
         <div className="vital-card spo2">
           <span className="vital-label">SpO2</span>
           <div className="vital-value-container">
-            <span className="vital-value">{spo2Measured ? 'Error' : '--'}</span>
-            {!spo2Measured && <span className="vital-unit">%</span>}
+            <span className="vital-value">{vitalsAssessed.spo2 ? 'Error' : '--'}</span>
+            {!vitalsAssessed.spo2 && <span className="vital-unit">%</span>}
           </div>
         </div>
 
@@ -45,13 +45,12 @@ export function VitalsMonitor() {
         <div className="vital-card temp">
           <span className="vital-label">RR</span>
           <div className="vital-value-container">
-            <span className="vital-value">{respirationMeasured ? 'Absent' : '--'}</span>
-            {!respirationMeasured && <span className="vital-unit">/min</span>}
+            <span className="vital-value">{vitalsAssessed.respiration ? 'Absent' : '--'}</span>
+            {!vitalsAssessed.respiration && <span className="vital-unit">/min</span>}
           </div>
         </div>
       </div>
 
-      {/* General Impression */}
       {/* General Impression */}
       <div className="hud-panel" style={{ marginTop: '24px', flexDirection: 'row', justifyContent: 'space-around', padding: '16px 24px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

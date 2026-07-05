@@ -5,11 +5,8 @@ import './InventoryHUD.css';
 export function InventoryHUD() {
   const { 
     selectedPPE, 
-    selectedEquipment, 
-    appliedEquipment,
-    setAppliedEquipment,
-    bagContents,
-    setBagContents,
+    equipmentState,
+    setEquipmentState,
     phase,
     toggleEquipment
   } = useScenario();
@@ -36,35 +33,40 @@ export function InventoryHUD() {
       <div className="inventory-section">
         <h4 className="inventory-subtitle">Equipment</h4>
         <div className="inventory-list">
-          {selectedEquipment.length > 0 ? (
-            selectedEquipment.map(item => (
+          {equipmentState.selected.length > 0 ? (
+            equipmentState.selected.map(item => (
               <div key={item}>
                 <button 
                   className="inventory-item equipment-item" 
                   disabled={phase !== 'PATIENT_ASSESSMENT'}
                   onClick={() => {
-
                     if (item === 'Trauma bag') {
                       setIsBagOpen(!isBagOpen);
                     } else {
-                      setAppliedEquipment([...appliedEquipment, item]);
+                      setEquipmentState(prev => ({
+                        ...prev,
+                        applied: [...prev.applied, item]
+                      }));
                       toggleEquipment(item);
                     }
                   }}
                 >
                   {item}
                 </button>
-                {item === 'Trauma bag' && isBagOpen && bagContents.length > 0 && (
+                {item === 'Trauma bag' && isBagOpen && equipmentState.bagContents.length > 0 && (
                   <div style={{ paddingLeft: '16px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {bagContents.map(subItem => (
+                    {equipmentState.bagContents.map(subItem => (
                       <button
                         key={subItem}
                         className="inventory-item equipment-item"
                         style={{ borderLeft: '2px solid var(--primary)' }}
                         disabled={phase !== 'PATIENT_ASSESSMENT'}
                         onClick={() => {
-                          setAppliedEquipment([...appliedEquipment, subItem]);
-                          setBagContents(bagContents.filter(i => i !== subItem));
+                          setEquipmentState(prev => ({
+                            ...prev,
+                            applied: [...prev.applied, subItem],
+                            bagContents: prev.bagContents.filter(i => i !== subItem)
+                          }));
                         }}
                       >
                         {subItem}
@@ -81,13 +83,13 @@ export function InventoryHUD() {
       </div>
       </div>
 
-      {appliedEquipment.length > 0 && (
+      {equipmentState.applied.length > 0 && (
         <div className="hud-panel">
           <h3 className="inventory-title">Applied</h3>
           <div className="inventory-section">
             <h4 className="inventory-subtitle">On Patient</h4>
             <div className="inventory-list">
-              {appliedEquipment.map(equip => (
+              {equipmentState.applied.map(equip => (
                 <div key={equip} className="inventory-item ppe-item">{equip}</div>
               ))}
             </div>

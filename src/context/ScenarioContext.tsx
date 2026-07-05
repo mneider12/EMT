@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, type ReactNode } from 'react';
 import type { SimulationPhase } from '../types/scenario';
 
 export type CPRConfig = {
@@ -10,29 +10,38 @@ export type CPRConfig = {
   switchUnit: string;
 };
 
+export type VitalsAssessed = {
+  heartRate: boolean;
+  bloodPressure: boolean;
+  spo2: boolean;
+  respiration: boolean;
+};
+
+export type EquipmentState = {
+  selected: string[];
+  applied: string[];
+  bagContents: string[];
+};
+
 interface ScenarioContextType {
   phase: SimulationPhase;
   setPhase: (phase: SimulationPhase) => void;
   selectedPPE: string[];
   togglePPE: (item: string) => void;
-  selectedEquipment: string[];
+  
+  equipmentState: EquipmentState;
+  setEquipmentState: React.Dispatch<React.SetStateAction<EquipmentState>>;
   toggleEquipment: (item: string) => void;
+  
   completedActions: string[];
   markActionCompleted: (action: string) => void;
-  heartRateMeasured: boolean;
-  setHeartRateMeasured: (measured: boolean) => void;
+  
+  vitalsAssessed: VitalsAssessed;
+  setVitalsAssessed: React.Dispatch<React.SetStateAction<VitalsAssessed>>;
+  
   impressionRevealed: boolean;
   setImpressionRevealed: (revealed: boolean) => void;
-  appliedEquipment: string[];
-  setAppliedEquipment: (items: string[]) => void;
-  bloodPressureMeasured: boolean;
-  setBloodPressureMeasured: (measured: boolean) => void;
-  bagContents: string[];
-  setBagContents: (contents: string[]) => void;
-  spo2Measured: boolean;
-  setSpo2Measured: (measured: boolean) => void;
-  respirationMeasured: boolean;
-  setRespirationMeasured: (measured: boolean) => void;
+  
   cprConfig: CPRConfig | null;
   setCprConfig: (config: CPRConfig | null) => void;
 }
@@ -42,15 +51,22 @@ const ScenarioContext = createContext<ScenarioContextType | undefined>(undefined
 export function ScenarioProvider({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<SimulationPhase>('INITIALIZATION');
   const [selectedPPE, setSelectedPPE] = useState<string[]>([]);
-  const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [completedActions, setCompletedActions] = useState<string[]>([]);
-  const [heartRateMeasured, setHeartRateMeasured] = useState<boolean>(false);
+  
+  const [equipmentState, setEquipmentState] = useState<EquipmentState>({
+    selected: [],
+    applied: [],
+    bagContents: ['Blood Pressure Cuff', 'Pulse Oximeter']
+  });
+
+  const [vitalsAssessed, setVitalsAssessed] = useState<VitalsAssessed>({
+    heartRate: false,
+    bloodPressure: false,
+    spo2: false,
+    respiration: false
+  });
+
   const [impressionRevealed, setImpressionRevealed] = useState<boolean>(false);
-  const [appliedEquipment, setAppliedEquipment] = useState<string[]>([]);
-  const [bloodPressureMeasured, setBloodPressureMeasured] = useState<boolean>(false);
-  const [bagContents, setBagContents] = useState<string[]>(['Blood Pressure Cuff', 'Pulse Oximeter']);
-  const [spo2Measured, setSpo2Measured] = useState<boolean>(false);
-  const [respirationMeasured, setRespirationMeasured] = useState<boolean>(false);
   const [cprConfig, setCprConfig] = useState<CPRConfig | null>(null);
 
   const togglePPE = (item: string) => {
@@ -60,9 +76,12 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleEquipment = (item: string) => {
-    setSelectedEquipment(prev => 
-      prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
-    );
+    setEquipmentState(prev => ({
+      ...prev,
+      selected: prev.selected.includes(item) 
+        ? prev.selected.filter(i => i !== item) 
+        : [...prev.selected, item]
+    }));
   };
 
   const markActionCompleted = (action: string) => {
@@ -76,15 +95,10 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
     <ScenarioContext.Provider value={{
       phase, setPhase,
       selectedPPE, togglePPE,
-      selectedEquipment, toggleEquipment,
+      equipmentState, setEquipmentState, toggleEquipment,
       completedActions, markActionCompleted,
-      heartRateMeasured, setHeartRateMeasured,
+      vitalsAssessed, setVitalsAssessed,
       impressionRevealed, setImpressionRevealed,
-      appliedEquipment, setAppliedEquipment,
-      bloodPressureMeasured, setBloodPressureMeasured,
-      bagContents, setBagContents,
-      spo2Measured, setSpo2Measured,
-      respirationMeasured, setRespirationMeasured,
       cprConfig, setCprConfig
     }}>
       {children}
