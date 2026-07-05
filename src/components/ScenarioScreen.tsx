@@ -81,12 +81,7 @@ export function ScenarioScreen() {
             </button>
             <button 
               className="option-btn" 
-              onClick={() => {
-                if (!completedActions.includes('PPE')) {
-                  alert('WARNING: Approaching without ensuring BSI first!');
-                }
-                setPhase('PATIENT_ASSESSMENT');
-              }}
+              onClick={() => setPhase('PATIENT_ASSESSMENT')}
             >
               Assess Patient
             </button>
