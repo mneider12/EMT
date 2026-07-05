@@ -52,7 +52,7 @@ export function ScenarioScreen() {
         <>
           <h2 className="dispatch-title">Incoming Dispatch</h2>
           <div className="dispatch-text">
-            "Respond to an unresponsive adult. Caller reports patient is not breathing and has no pulse. Police and Fire are en route."
+            Respond to an unresponsive adult. Caller reports patient is not breathing and has no pulse. Police and Fire are en route.
           </div>
           <button className="start-btn" onClick={() => setPhase('SCENE_ARRIVAL')}>
             Arrive on Scene
@@ -81,9 +81,9 @@ export function ScenarioScreen() {
             </button>
             <button 
               className="option-btn" 
-              onClick={() => setPhase('PATIENT_ASSESSMENT')}
+              onClick={() => setPhase('APPROACH_PATIENT')}
             >
-              Assess Patient
+              Approach Patient
             </button>
           </div>
         </>
@@ -148,6 +148,19 @@ export function ScenarioScreen() {
           </button>
         </>
       )}
+
+      {phase === 'APPROACH_PATIENT' && (
+        <>
+          <h2 className="dispatch-title">Initial Impression</h2>
+          <div className="dispatch-text">
+            You see 1 patient, lying supine. Skin is pale, no noticeable breathing. The patient is not alert to you.
+          </div>
+          <button className="start-btn" onClick={() => setPhase('PATIENT_ASSESSMENT')}>
+            Proceed to Assessment
+          </button>
+        </>
+      )}
+
       {phase === 'PATIENT_ASSESSMENT' && (
         <>
           <h2 className="dispatch-title">Patient Assessment</h2>
