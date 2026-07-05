@@ -19,7 +19,8 @@ export function ScenarioScreen() {
     setImpressionRevealed,
     appliedEquipment,
     setBloodPressureMeasured,
-    setSpo2Measured
+    setSpo2Measured,
+    setRespirationMeasured
   } = useScenario();
 
   return (
@@ -182,6 +183,15 @@ export function ScenarioScreen() {
                   onClick={() => setAssessmentAction('check_pulse')}
                 >
                   Check Pulse (Heart Rate)
+                </button>
+                <button 
+                  className="option-btn" 
+                  onClick={() => {
+                    setRespirationMeasured(true);
+                    alert(`Respiration rate is absent.`);
+                  }}
+                >
+                  Assess Respiration Rate
                 </button>
                 {appliedEquipment.includes('Blood Pressure Cuff') && (
                   <button 

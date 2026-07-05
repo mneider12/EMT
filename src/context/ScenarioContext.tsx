@@ -22,6 +22,8 @@ interface ScenarioContextType {
   setBagContents: (contents: string[]) => void;
   spo2Measured: boolean;
   setSpo2Measured: (measured: boolean) => void;
+  respirationMeasured: boolean;
+  setRespirationMeasured: (measured: boolean) => void;
 }
 
 const ScenarioContext = createContext<ScenarioContextType | undefined>(undefined);
@@ -37,6 +39,7 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
   const [bloodPressureMeasured, setBloodPressureMeasured] = useState<boolean>(false);
   const [bagContents, setBagContents] = useState<string[]>(['Blood Pressure Cuff', 'Pulse Oximeter']);
   const [spo2Measured, setSpo2Measured] = useState<boolean>(false);
+  const [respirationMeasured, setRespirationMeasured] = useState<boolean>(false);
 
   const togglePPE = (item: string) => {
     setSelectedPPE(prev => 
@@ -68,7 +71,8 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
       appliedEquipment, setAppliedEquipment,
       bloodPressureMeasured, setBloodPressureMeasured,
       bagContents, setBagContents,
-      spo2Measured, setSpo2Measured
+      spo2Measured, setSpo2Measured,
+      respirationMeasured, setRespirationMeasured
     }}>
       {children}
     </ScenarioContext.Provider>
