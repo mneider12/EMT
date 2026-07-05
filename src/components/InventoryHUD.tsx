@@ -6,8 +6,8 @@ export function InventoryHUD() {
   const { 
     selectedPPE, 
     selectedEquipment, 
-    activeEquipment,
-    setActiveEquipment,
+    appliedEquipment,
+    setAppliedEquipment,
     bagContents,
     setBagContents
   } = useScenario();
@@ -57,7 +57,7 @@ export function InventoryHUD() {
                         className="inventory-item equipment-item"
                         style={{ borderLeft: '2px solid var(--primary)' }}
                         onClick={() => {
-                          setActiveEquipment(subItem);
+                          setAppliedEquipment([...appliedEquipment, subItem]);
                           setBagContents(bagContents.filter(i => i !== subItem));
                         }}
                       >
@@ -75,13 +75,15 @@ export function InventoryHUD() {
       </div>
       </div>
 
-      {activeEquipment && (
+      {appliedEquipment.length > 0 && (
         <div className="hud-panel">
           <h3 className="inventory-title">Applied</h3>
           <div className="inventory-section">
             <h4 className="inventory-subtitle">On Patient</h4>
             <div className="inventory-list">
-              <div className="inventory-item ppe-item">{activeEquipment}</div>
+              {appliedEquipment.map(equip => (
+                <div key={equip} className="inventory-item ppe-item">{equip}</div>
+              ))}
             </div>
           </div>
         </div>

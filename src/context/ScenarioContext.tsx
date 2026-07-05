@@ -14,12 +14,14 @@ interface ScenarioContextType {
   setHeartRateMeasured: (measured: boolean) => void;
   impressionRevealed: boolean;
   setImpressionRevealed: (revealed: boolean) => void;
-  activeEquipment: string | null;
-  setActiveEquipment: (item: string | null) => void;
+  appliedEquipment: string[];
+  setAppliedEquipment: (items: string[]) => void;
   bloodPressureMeasured: boolean;
   setBloodPressureMeasured: (measured: boolean) => void;
   bagContents: string[];
   setBagContents: (contents: string[]) => void;
+  spo2Measured: boolean;
+  setSpo2Measured: (measured: boolean) => void;
 }
 
 const ScenarioContext = createContext<ScenarioContextType | undefined>(undefined);
@@ -31,9 +33,10 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
   const [completedActions, setCompletedActions] = useState<string[]>([]);
   const [heartRateMeasured, setHeartRateMeasured] = useState<boolean>(false);
   const [impressionRevealed, setImpressionRevealed] = useState<boolean>(false);
-  const [activeEquipment, setActiveEquipment] = useState<string | null>(null);
+  const [appliedEquipment, setAppliedEquipment] = useState<string[]>([]);
   const [bloodPressureMeasured, setBloodPressureMeasured] = useState<boolean>(false);
-  const [bagContents, setBagContents] = useState<string[]>(['Blood Pressure Cuff']);
+  const [bagContents, setBagContents] = useState<string[]>(['Blood Pressure Cuff', 'Pulse Oximeter']);
+  const [spo2Measured, setSpo2Measured] = useState<boolean>(false);
 
   const togglePPE = (item: string) => {
     setSelectedPPE(prev => 
@@ -62,9 +65,10 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
       completedActions, markActionCompleted,
       heartRateMeasured, setHeartRateMeasured,
       impressionRevealed, setImpressionRevealed,
-      activeEquipment, setActiveEquipment,
+      appliedEquipment, setAppliedEquipment,
       bloodPressureMeasured, setBloodPressureMeasured,
-      bagContents, setBagContents
+      bagContents, setBagContents,
+      spo2Measured, setSpo2Measured
     }}>
       {children}
     </ScenarioContext.Provider>

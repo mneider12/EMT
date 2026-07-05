@@ -2,7 +2,7 @@ import './VitalsMonitor.css';
 import { useScenario } from '../context/ScenarioContext';
 
 export function VitalsMonitor() {
-  const { heartRateMeasured, impressionRevealed, bloodPressureMeasured } = useScenario();
+  const { heartRateMeasured, impressionRevealed, bloodPressureMeasured, spo2Measured } = useScenario();
 
   return (
     <>
@@ -31,8 +31,8 @@ export function VitalsMonitor() {
         <div className="vital-card spo2">
           <span className="vital-label">SpO2</span>
           <div className="vital-value-container">
-            <span className="vital-value">98</span>
-            <span className="vital-unit">%</span>
+            <span className="vital-value">{spo2Measured ? 'Error' : '--'}</span>
+            {!spo2Measured && <span className="vital-unit">%</span>}
           </div>
         </div>
 

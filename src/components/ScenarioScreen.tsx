@@ -17,8 +17,9 @@ export function ScenarioScreen() {
     markActionCompleted,
     setHeartRateMeasured,
     setImpressionRevealed,
-    activeEquipment,
-    setBloodPressureMeasured
+    appliedEquipment,
+    setBloodPressureMeasured,
+    setSpo2Measured
   } = useScenario();
 
   return (
@@ -182,12 +183,23 @@ export function ScenarioScreen() {
                 >
                   Check Pulse (Heart Rate)
                 </button>
-                {activeEquipment === 'Blood Pressure Cuff' && (
+                {appliedEquipment.includes('Blood Pressure Cuff') && (
                   <button 
                     className="option-btn" 
                     onClick={() => setAssessmentAction('check_bp')}
                   >
                     Assess Blood Pressure
+                  </button>
+                )}
+                {appliedEquipment.includes('Pulse Oximeter') && (
+                  <button 
+                    className="option-btn" 
+                    onClick={() => {
+                      setSpo2Measured(true);
+                      alert(`SpO2 reading is error.`);
+                    }}
+                  >
+                    Assess SpO2
                   </button>
                 )}
               </div>
