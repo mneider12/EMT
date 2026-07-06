@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState, type ReactNode } from 'reac
 import type { SimulationPhase } from '../types/scenario';
 
 export type CPRConfig = {
-  compressions: number | '';
+  type: 'cpr' | 'compressions';
+  compressions: number | string;
   respirations: number | '';
   rateLow: number | '';
   rateHigh: number | '';

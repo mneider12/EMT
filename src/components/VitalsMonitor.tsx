@@ -8,7 +8,9 @@ export function VitalsMonitor() {
     <>
       {cprConfig && (
         <div style={{ backgroundColor: 'rgba(255, 60, 60, 0.2)', border: '1px solid #ff3c3c', color: '#ff3c3c', padding: '12px', borderRadius: '8px', textAlign: 'center', fontWeight: 'bold', marginBottom: '24px', letterSpacing: '2px', textTransform: 'uppercase' }}>
-          CPR IN PROGRESS ({cprConfig.compressions}:{cprConfig.respirations})
+          {cprConfig.type === 'cpr' 
+            ? `CPR IN PROGRESS (${cprConfig.compressions}:${cprConfig.respirations})`
+            : `COMPRESSIONS IN PROGRESS`}
         </div>
       )}
       {/* Vitals Grid */}

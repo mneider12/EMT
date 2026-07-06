@@ -83,6 +83,15 @@ export function PatientAssessmentPhase() {
             <button 
               className="option-btn" 
               onClick={() => {
+                setError(null);
+                setAssessmentAction('begin_chest_compressions');
+              }}
+            >
+              Begin Chest Compressions
+            </button>
+            <button 
+              className="option-btn" 
+              onClick={() => {
                 setVitalsAssessed(prev => ({ ...prev, respiration: true }));
                 alert(`Respiration rate is absent.`);
               }}
@@ -224,13 +233,62 @@ export function PatientAssessmentPhase() {
                     return;
                   }
                   setError(null);
-                  setCprConfig({ compressions, respirations, rateLow, rateHigh, switchTime, switchUnit });
+                  setCprConfig({ type: 'cpr', compressions, respirations, rateLow, rateHigh, switchTime, switchUnit });
                   alert('CPR started.');
                   setAssessmentAction(null);
                 }}
                 style={{ flex: 1 }}
               >
                 Start CPR
+              </button>
+              <button 
+                className="start-btn" 
+                onClick={() => setAssessmentAction(null)}
+                style={{ flex: 1 }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </>
+      ) : assessmentAction === 'begin_chest_compressions' ? (
+        <>
+          <p className="scenario-desc">
+            Configure continuous chest compressions.
+          </p>
+          {error && <div style={{ color: '#ff4444', marginBottom: '16px', textAlign: 'center', fontWeight: 'bold' }}>{error}</div>}
+          <div className="cpr-form" style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '600px', margin: '0 auto', textAlign: 'left' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '300px' }}>
+                <label style={{ color: 'var(--text-bright)' }}>Rate (Compressions per Minute)</label>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <input type="number" min="1" value={rateLow} onChange={e => setRateLow(e.target.value === '' ? '' : Number(e.target.value))} style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }} />
+                  <span style={{ color: 'var(--text-muted)' }}>to</span>
+                  <input type="number" min="1" value={rateHigh} onChange={e => setRateHigh(e.target.value === '' ? '' : Number(e.target.value))} style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg-dark)', color: 'var(--text-bright)' }} />
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+              <button 
+                className="option-btn" 
+                onClick={() => {
+                  if (rateLow === '' || rateHigh === '') {
+                    setError('Please fill out all fields.');
+                    return;
+                  }
+                  if (rateHigh < rateLow) {
+                    setError('Maximum rate must be greater than or equal to minimum rate.');
+                    return;
+                  }
+                  setError(null);
+                  setCprConfig({ type: 'compressions', compressions: 'Continuous', respirations: 0, rateLow, rateHigh, switchTime: '', switchUnit: '' });
+                  alert('Chest compressions started.');
+                  setAssessmentAction(null);
+                }}
+                style={{ flex: 1 }}
+              >
+                Start Compressions
               </button>
               <button 
                 className="start-btn" 
