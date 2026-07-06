@@ -339,6 +339,7 @@ export function PatientAssessmentPhase() {
                   }
                   setError(null);
                   markActionCompleted('START_COMPRESSIONS');
+                  markActionCompleted(`START_COMPRESSIONS_${activeRole.toUpperCase()}`);
                   setCprConfig({ type: 'compressions', compressions: 'Continuous', respirations: 0, rateLow, rateHigh, switchTime: '', switchUnit: '' });
                   setAssessmentAction(null);
                 }}

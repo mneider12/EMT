@@ -22,13 +22,17 @@ export function EvaluationPhase() {
     }
 
     // Equipment Evaluation
-    if (!equipmentState.selected.includes('O2 bag')) {
+    const hasO2 = equipmentState.selected.includes('O2 bag') || equipmentState.applied.some(e => e.name === 'O2 bag');
+    const hasAED = equipmentState.selected.includes('AED') || equipmentState.applied.some(e => e.name === 'AED');
+    const hasOB = equipmentState.selected.includes('OB kit') || equipmentState.applied.some(e => e.name === 'OB kit');
+
+    if (!hasO2) {
       feedback.push('Failed to bring O2 bag (Required).');
     }
-    if (!equipmentState.selected.includes('AED')) {
+    if (!hasAED) {
       feedback.push('Failed to bring AED (Required).');
     }
-    if (equipmentState.selected.includes('OB kit')) {
+    if (hasOB) {
       feedback.push('Brought OB kit (Unnecessary for this scenario).');
     }
 
@@ -59,6 +63,14 @@ export function EvaluationPhase() {
       feedback.push('Failed to start chest compressions and apply AED.');
     } else if (idxCPR !== -1 && (idxCPR < idxComp || idxCPR < idxAED)) {
       feedback.push('Failed to start chest compressions and apply AED prior to starting full CPR.');
+    }
+
+    const compRole = completedActions.includes('START_COMPRESSIONS_LEAD') ? 'Lead' : 
+                     completedActions.includes('START_COMPRESSIONS_PARTNER') ? 'Partner' : null;
+    const aedRole = equipmentState.applied.find(e => e.name === 'AED')?.appliedBy;
+
+    if (compRole && aedRole && compRole === aedRole) {
+      feedback.push(`Chest compressions and AED application were both performed by the ${compRole}. These tasks must be performed simultaneously by different EMTs.`);
     }
 
     // Inappropriate actions
