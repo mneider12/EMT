@@ -1,3 +1,4 @@
+export type ScenarioId = 'unresponsive_cpr' | 'disoriented_male';
 export type SimulationPhase = 'INITIALIZATION' | 'DISPATCH' | 'SCENE_ARRIVAL' | 'PPE_SELECTION' | 'EQUIPMENT_SELECTION' | 'APPROACH_PATIENT' | 'PATIENT_ASSESSMENT' | 'EVALUATION';
 
 export const AVAILABLE_PPE = [

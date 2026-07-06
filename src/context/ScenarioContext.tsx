@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
-import type { SimulationPhase } from '../types/scenario';
+import type { SimulationPhase, ScenarioId } from '../types/scenario';
 
 export type CPRConfig = {
   type: 'cpr' | 'compressions';
@@ -30,6 +30,8 @@ export type EquipmentState = {
 };
 
 interface ScenarioContextType {
+  activeScenario: ScenarioId | null;
+  setActiveScenario: (id: ScenarioId | null) => void;
   phase: SimulationPhase;
   setPhase: (phase: SimulationPhase) => void;
   selectedPPE: string[];
@@ -58,6 +60,7 @@ interface ScenarioContextType {
 const ScenarioContext = createContext<ScenarioContextType | undefined>(undefined);
 
 export function ScenarioProvider({ children }: { children: ReactNode }) {
+  const [activeScenario, setActiveScenario] = useState<ScenarioId | null>(null);
   const [phase, setPhase] = useState<SimulationPhase>('INITIALIZATION');
   const [selectedPPE, setSelectedPPE] = useState<string[]>([]);
   const [completedActions, setCompletedActions] = useState<string[]>([]);
@@ -102,6 +105,9 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
   };
 
   const resetScenario = (returnToHome: boolean) => {
+    if (returnToHome) {
+      setActiveScenario(null);
+    }
     setPhase(returnToHome ? 'INITIALIZATION' : 'DISPATCH');
     setSelectedPPE([]);
     setCompletedActions([]);
@@ -123,6 +129,7 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
 
   return (
     <ScenarioContext.Provider value={{
+      activeScenario, setActiveScenario,
       phase, setPhase,
       selectedPPE, togglePPE,
       equipmentState, setEquipmentState, toggleEquipment,
