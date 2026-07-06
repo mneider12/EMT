@@ -70,7 +70,16 @@ export function PatientAssessmentPhase() {
               className="option-btn" 
               onClick={() => setAssessmentAction('check_pulse')}
             >
-              Check Pulse (Heart Rate)
+              Check Pulse
+            </button>
+            <button 
+              className="option-btn" 
+              onClick={() => {
+                setVitalsAssessed(prev => ({ ...prev, heartRate: true }));
+                alert('Heart rate is absent.');
+              }}
+            >
+              Assess Heart Rate
             </button>
             <button 
               className="option-btn" 
@@ -138,7 +147,6 @@ export function PatientAssessmentPhase() {
                 key={artery}
                 className="option-btn"
                 onClick={() => {
-                  setVitalsAssessed(prev => ({ ...prev, heartRate: true }));
                   alert(`Checked ${artery} pulse. Pulse is absent.`);
                   setAssessmentAction(null);
                 }}
