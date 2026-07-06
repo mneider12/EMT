@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useScenario } from '../context/ScenarioContext';
+import { EQUIPMENT_ACTIONS } from '../types/scenario';
 import './InventoryHUD.css';
 
 export function InventoryHUD() {
@@ -9,7 +10,8 @@ export function InventoryHUD() {
     setEquipmentState,
     phase,
     toggleEquipment,
-    activeRole
+    activeRole,
+    markActionCompleted
   } = useScenario();
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [pendingEquipment, setPendingEquipment] = useState<string | null>(null);
@@ -19,6 +21,9 @@ export function InventoryHUD() {
       ...prev,
       applied: [...prev.applied, { name: item, appliedBy: role }]
     }));
+    if (EQUIPMENT_ACTIONS[item]) {
+      markActionCompleted(EQUIPMENT_ACTIONS[item]);
+    }
     toggleEquipment(item);
     setPendingEquipment(null);
   };
@@ -29,6 +34,9 @@ export function InventoryHUD() {
       applied: [...prev.applied, { name: item, appliedBy: role }],
       bagContents: prev.bagContents.filter(i => i !== item)
     }));
+    if (EQUIPMENT_ACTIONS[item]) {
+      markActionCompleted(EQUIPMENT_ACTIONS[item]);
+    }
     setPendingEquipment(null);
   };
 

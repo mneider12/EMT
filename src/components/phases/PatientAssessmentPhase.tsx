@@ -11,7 +11,8 @@ export function PatientAssessmentPhase() {
     setVitalsAssessed, 
     setCprConfig,
     activeRole,
-    setActiveRole
+    setActiveRole,
+    markActionCompleted
   } = useScenario();
 
   const [compressions, setCompressions] = useState<number | ''>('');
@@ -81,6 +82,7 @@ export function PatientAssessmentPhase() {
             <button 
               className="option-btn" 
               onClick={() => {
+                markActionCompleted('ASSESS_HEART_RATE');
                 setVitalsAssessed(prev => ({ ...prev, heartRate: true }));
                 alert('Heart rate is absent.');
               }}
@@ -108,6 +110,7 @@ export function PatientAssessmentPhase() {
             <button 
               className="option-btn" 
               onClick={() => {
+                markActionCompleted('ASSESS_RESPIRATION_RATE');
                 setVitalsAssessed(prev => ({ ...prev, respiration: true }));
                 alert(`Respiration rate is absent.`);
               }}
@@ -126,6 +129,7 @@ export function PatientAssessmentPhase() {
               <button 
                 className="option-btn" 
                 onClick={() => {
+                  markActionCompleted('ASSESS_SPO2');
                   setVitalsAssessed(prev => ({ ...prev, spo2: true }));
                   alert(`SpO2 reading is error.`);
                 }}
@@ -153,6 +157,7 @@ export function PatientAssessmentPhase() {
                 key={artery}
                 className="option-btn"
                 onClick={() => {
+                  markActionCompleted('ASSESS_PULSE');
                   alert(`Checked ${artery} pulse. Pulse is absent.`);
                   setAssessmentAction(null);
                 }}
@@ -178,6 +183,7 @@ export function PatientAssessmentPhase() {
             <button
               className="option-btn"
               onClick={() => {
+                markActionCompleted('ASSESS_RESPONSIVENESS_VERBAL');
                 alert(`Patient does not respond to verbal stimulus.`);
                 setAssessmentAction(null);
               }}
@@ -187,6 +193,7 @@ export function PatientAssessmentPhase() {
             <button
               className="option-btn"
               onClick={() => {
+                markActionCompleted('ASSESS_RESPONSIVENESS_PAIN');
                 alert(`Patient does not respond to painful stimulus.`);
                 setAssessmentAction(null);
               }}
@@ -211,6 +218,7 @@ export function PatientAssessmentPhase() {
             <button
               className="option-btn"
               onClick={() => {
+                markActionCompleted('ASSESS_BP');
                 setVitalsAssessed(prev => ({ ...prev, bloodPressure: true }));
                 alert(`Blood pressure is absent.`);
                 setAssessmentAction(null);
@@ -281,6 +289,7 @@ export function PatientAssessmentPhase() {
                     return;
                   }
                   setError(null);
+                  markActionCompleted('START_CPR');
                   setCprConfig({ type: 'cpr', compressions, respirations, rateLow, rateHigh, switchTime, switchUnit });
                   setPhase('EVALUATION');
                 }}
@@ -329,6 +338,7 @@ export function PatientAssessmentPhase() {
                     return;
                   }
                   setError(null);
+                  markActionCompleted('START_COMPRESSIONS');
                   setCprConfig({ type: 'compressions', compressions: 'Continuous', respirations: 0, rateLow, rateHigh, switchTime: '', switchUnit: '' });
                   setAssessmentAction(null);
                 }}

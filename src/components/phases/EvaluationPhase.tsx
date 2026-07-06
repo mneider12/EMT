@@ -2,7 +2,77 @@ import { useScenario } from '../../context/ScenarioContext';
 import '../ScenarioScreen.css';
 
 export function EvaluationPhase() {
-  const { resetScenario } = useScenario();
+  const { resetScenario, selectedPPE, equipmentState, completedActions } = useScenario();
+
+  const evaluatePerformance = () => {
+    const feedback: string[] = [];
+
+    // PPE Evaluation
+    if (!selectedPPE.includes('Nitrile Gloves')) {
+      feedback.push('Failed to wear Nitrile Gloves (Required).');
+    }
+    if (!selectedPPE.includes('Safety Glasses') && !selectedPPE.includes('Face Shield')) {
+      feedback.push('Failed to wear eye protection (Safety Glasses or Face Shield required).');
+    }
+    if (!selectedPPE.includes('Surgical Mask') && !selectedPPE.includes('N95 Mask') && !selectedPPE.includes('Respirator')) {
+      feedback.push('Failed to wear a mask (Surgical Mask, N95 Mask, or Respirator required).');
+    }
+    if (selectedPPE.includes('Medical Gown')) {
+      feedback.push('Wore a Medical Gown (Inappropriate for this scenario).');
+    }
+
+    // Equipment Evaluation
+    if (!equipmentState.selected.includes('O2 bag')) {
+      feedback.push('Failed to bring O2 bag (Required).');
+    }
+    if (!equipmentState.selected.includes('AED')) {
+      feedback.push('Failed to bring AED (Required).');
+    }
+    if (equipmentState.selected.includes('OB kit')) {
+      feedback.push('Brought OB kit (Unnecessary for this scenario).');
+    }
+
+    // Assessment Evaluation
+    const idxRespV = completedActions.indexOf('ASSESS_RESPONSIVENESS_VERBAL');
+    const idxRespP = completedActions.indexOf('ASSESS_RESPONSIVENESS_PAIN');
+    const idxPulse = completedActions.indexOf('ASSESS_PULSE');
+    const idxComp = completedActions.indexOf('START_COMPRESSIONS');
+    const idxAED = completedActions.indexOf('APPLY_AED');
+    const idxCPR = completedActions.indexOf('START_CPR');
+
+    // Rule: Must check both responsiveness
+    if (idxRespV === -1 || idxRespP === -1) {
+      feedback.push('Failed to check responsiveness (verbal and painful).');
+    } else if (idxPulse !== -1 && (idxPulse < idxRespV || idxPulse < idxRespP)) {
+      feedback.push('Failed to check responsiveness (verbal and painful) prior to checking pulse.');
+    }
+
+    // Rule: Must check pulse
+    if (idxPulse === -1) {
+      feedback.push('Failed to check pulse.');
+    } else if ((idxComp !== -1 && idxComp < idxPulse) || (idxAED !== -1 && idxAED < idxPulse)) {
+      feedback.push('Failed to check pulse prior to starting compressions or applying AED.');
+    }
+
+    // Rule: Must start compressions and apply AED
+    if (idxComp === -1 || idxAED === -1) {
+      feedback.push('Failed to start chest compressions and apply AED.');
+    } else if (idxCPR !== -1 && (idxCPR < idxComp || idxCPR < idxAED)) {
+      feedback.push('Failed to start chest compressions and apply AED prior to starting full CPR.');
+    }
+
+    // Inappropriate actions
+    if (completedActions.includes('ASSESS_HEART_RATE')) {
+      feedback.push('Assessed heart rate (Inappropriate: delays chest compressions).');
+    }
+    if (completedActions.includes('ASSESS_RESPIRATION_RATE')) {
+      feedback.push('Assessed respiration rate (Inappropriate: delays chest compressions).');
+    }
+
+    return feedback;
+  };
+
+  const feedback = evaluatePerformance();
 
   return (
     <>
@@ -15,9 +85,17 @@ export function EvaluationPhase() {
 
       <div style={{ backgroundColor: 'var(--bg-dark)', border: '1px solid var(--border)', borderRadius: '8px', padding: '24px', marginBottom: '32px', textAlign: 'left' }}>
         <h3 style={{ color: 'var(--text-bright)', marginBottom: '16px', fontSize: '1.2rem' }}>Performance Evaluation</h3>
-        <p style={{ color: 'var(--text-muted)' }}>
-          (Placeholder: A detailed evaluation of actions taken will be displayed here.)
-        </p>
+        {feedback.length === 0 ? (
+          <div style={{ color: 'var(--success)', fontWeight: 'bold' }}>
+            Excellent work! All protocols were followed correctly.
+          </div>
+        ) : (
+          <ul style={{ color: '#ff4444', display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '20px', margin: 0 }}>
+            {feedback.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="options-grid" style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>

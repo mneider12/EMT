@@ -17,3 +17,13 @@ export const AVAILABLE_EQUIPMENT = [
   'OB kit',
   'AED'
 ];
+
+export const EQUIPMENT_ACTIONS: Record<string, string> = {
+  'O2 bag': 'APPLY_O2_BAG',
+  'Trauma bag': 'APPLY_TRAUMA_BAG',
+  'Oxygen cylinder': 'APPLY_OXYGEN_CYLINDER',
+  'OB kit': 'APPLY_OB_KIT',
+  'AED': 'APPLY_AED',
+  'Blood Pressure Cuff': 'APPLY_BLOOD_PRESSURE_CUFF',
+  'Pulse Oximeter': 'APPLY_PULSE_OXIMETER'
+};
