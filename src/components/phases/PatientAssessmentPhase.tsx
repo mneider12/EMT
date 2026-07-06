@@ -4,13 +4,14 @@ import '../ScenarioScreen.css';
 
 export function PatientAssessmentPhase() {
   const [assessmentAction, setAssessmentAction] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'Lead' | 'Partner'>('Lead');
-  
+
   const { 
     setPhase, 
     equipmentState, 
     setVitalsAssessed, 
-    setCprConfig 
+    setCprConfig,
+    activeRole,
+    setActiveRole
   } = useScenario();
 
   const [compressions, setCompressions] = useState<number | ''>('');
@@ -28,13 +29,13 @@ export function PatientAssessmentPhase() {
         <>
           <div style={{ display: 'flex', gap: '32px', marginBottom: '24px', borderBottom: '1px solid var(--border)', width: '100%', justifyContent: 'center' }}>
             <button 
-              onClick={() => setActiveTab('Lead')}
+              onClick={() => setActiveRole('Lead')}
               style={{ 
                 padding: '12px 24px', 
                 background: 'none', 
                 border: 'none', 
-                borderBottom: activeTab === 'Lead' ? '2px solid var(--primary)' : '2px solid transparent',
-                color: activeTab === 'Lead' ? 'var(--text-bright)' : 'var(--text-muted)',
+                borderBottom: activeRole === 'Lead' ? '2px solid var(--primary)' : '2px solid transparent',
+                color: activeRole === 'Lead' ? 'var(--text-bright)' : 'var(--text-muted)',
                 cursor: 'pointer',
                 fontWeight: 'bold',
                 fontSize: '1.1rem',
@@ -44,13 +45,13 @@ export function PatientAssessmentPhase() {
               Lead
             </button>
             <button 
-              onClick={() => setActiveTab('Partner')}
+              onClick={() => setActiveRole('Partner')}
               style={{ 
                 padding: '12px 24px', 
                 background: 'none', 
                 border: 'none', 
-                borderBottom: activeTab === 'Partner' ? '2px solid var(--primary)' : '2px solid transparent',
-                color: activeTab === 'Partner' ? 'var(--text-bright)' : 'var(--text-muted)',
+                borderBottom: activeRole === 'Partner' ? '2px solid var(--primary)' : '2px solid transparent',
+                color: activeRole === 'Partner' ? 'var(--text-bright)' : 'var(--text-muted)',
                 cursor: 'pointer',
                 fontWeight: 'bold',
                 fontSize: '1.1rem',
@@ -62,7 +63,7 @@ export function PatientAssessmentPhase() {
           </div>
 
           <p className="scenario-desc">
-            Select an assessment or action for the {activeTab} to perform.
+            Select an assessment or action for the {activeRole} to perform.
           </p>
           <div className="options-grid">
             <button 
@@ -98,7 +99,7 @@ export function PatientAssessmentPhase() {
             >
               Assess Respiration Rate
             </button>
-            {equipmentState.applied.includes('Blood Pressure Cuff') && (
+            {equipmentState.applied.some(e => e.name === 'Blood Pressure Cuff') && (
               <button 
                 className="option-btn" 
                 onClick={() => setAssessmentAction('check_bp')}
@@ -106,7 +107,7 @@ export function PatientAssessmentPhase() {
                 Assess Blood Pressure
               </button>
             )}
-            {equipmentState.applied.includes('Pulse Oximeter') && (
+            {equipmentState.applied.some(e => e.name === 'Pulse Oximeter') && (
               <button 
                 className="option-btn" 
                 onClick={() => {

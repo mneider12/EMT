@@ -18,9 +18,14 @@ export type VitalsAssessed = {
   respiration: boolean;
 };
 
+export type AppliedEquipment = {
+  name: string;
+  appliedBy: 'Lead' | 'Partner';
+};
+
 export type EquipmentState = {
   selected: string[];
-  applied: string[];
+  applied: AppliedEquipment[];
   bagContents: string[];
 };
 
@@ -45,6 +50,8 @@ interface ScenarioContextType {
   
   cprConfig: CPRConfig | null;
   setCprConfig: (config: CPRConfig | null) => void;
+  activeRole: 'Lead' | 'Partner';
+  setActiveRole: (role: 'Lead' | 'Partner') => void;
 }
 
 const ScenarioContext = createContext<ScenarioContextType | undefined>(undefined);
@@ -69,6 +76,7 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
 
   const [impressionRevealed, setImpressionRevealed] = useState<boolean>(false);
   const [cprConfig, setCprConfig] = useState<CPRConfig | null>(null);
+  const [activeRole, setActiveRole] = useState<'Lead' | 'Partner'>('Lead');
 
   const togglePPE = (item: string) => {
     setSelectedPPE(prev => 
@@ -100,7 +108,8 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
       completedActions, markActionCompleted,
       vitalsAssessed, setVitalsAssessed,
       impressionRevealed, setImpressionRevealed,
-      cprConfig, setCprConfig
+      cprConfig, setCprConfig,
+      activeRole, setActiveRole
     }}>
       {children}
     </ScenarioContext.Provider>
