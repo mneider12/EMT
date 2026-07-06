@@ -243,8 +243,7 @@ export function PatientAssessmentPhase() {
                   }
                   setError(null);
                   setCprConfig({ type: 'cpr', compressions, respirations, rateLow, rateHigh, switchTime, switchUnit });
-                  alert('CPR started.');
-                  setAssessmentAction(null);
+                  setPhase('EVALUATION');
                 }}
                 style={{ flex: 1 }}
               >
@@ -292,7 +291,6 @@ export function PatientAssessmentPhase() {
                   }
                   setError(null);
                   setCprConfig({ type: 'compressions', compressions: 'Continuous', respirations: 0, rateLow, rateHigh, switchTime: '', switchUnit: '' });
-                  alert('Chest compressions started.');
                   setAssessmentAction(null);
                 }}
                 style={{ flex: 1 }}

@@ -6,6 +6,7 @@ import { PPESelectionPhase } from './phases/PPESelectionPhase';
 import { EquipmentSelectionPhase } from './phases/EquipmentSelectionPhase';
 import { ApproachPatientPhase } from './phases/ApproachPatientPhase';
 import { PatientAssessmentPhase } from './phases/PatientAssessmentPhase';
+import { EvaluationPhase } from './phases/EvaluationPhase';
 import './ScenarioScreen.css';
 
 export function ScenarioScreen() {
@@ -20,6 +21,7 @@ export function ScenarioScreen() {
       {phase === 'EQUIPMENT_SELECTION' && <EquipmentSelectionPhase />}
       {phase === 'APPROACH_PATIENT' && <ApproachPatientPhase />}
       {phase === 'PATIENT_ASSESSMENT' && <PatientAssessmentPhase />}
+      {phase === 'EVALUATION' && <EvaluationPhase />}
     </div>
   );
 }

@@ -6,7 +6,9 @@ import { ScenarioProvider, useScenario } from './context/ScenarioContext';
 import './App.css';
 
 function HeaderControls() {
-  const { resetScenario } = useScenario();
+  const { resetScenario, phase } = useScenario();
+
+  if (phase === 'EVALUATION') return null;
 
   return (
     <div style={{ display: 'flex', gap: '12px' }}>
