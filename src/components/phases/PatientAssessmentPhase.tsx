@@ -68,6 +68,12 @@ export function PatientAssessmentPhase() {
           <div className="options-grid">
             <button 
               className="option-btn" 
+              onClick={() => setAssessmentAction('check_responsiveness')}
+            >
+              Check Responsiveness
+            </button>
+            <button 
+              className="option-btn" 
               onClick={() => setAssessmentAction('check_pulse')}
             >
               Check Pulse
@@ -154,6 +160,39 @@ export function PatientAssessmentPhase() {
                 {artery} Artery
               </button>
             ))}
+          </div>
+          <button 
+            className="start-btn" 
+            onClick={() => setAssessmentAction(null)}
+            style={{ marginTop: '24px' }}
+          >
+            Cancel
+          </button>
+        </>
+      ) : assessmentAction === 'check_responsiveness' ? (
+        <>
+          <p className="scenario-desc">
+            How would you like to check for responsiveness?
+          </p>
+          <div className="options-grid">
+            <button
+              className="option-btn"
+              onClick={() => {
+                alert(`Patient does not respond to verbal stimulus.`);
+                setAssessmentAction(null);
+              }}
+            >
+              Verbal Stimulus
+            </button>
+            <button
+              className="option-btn"
+              onClick={() => {
+                alert(`Patient does not respond to painful stimulus.`);
+                setAssessmentAction(null);
+              }}
+            >
+              Painful Stimulus
+            </button>
           </div>
           <button 
             className="start-btn" 
