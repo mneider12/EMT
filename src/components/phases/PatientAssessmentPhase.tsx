@@ -4,6 +4,7 @@ import '../ScenarioScreen.css';
 
 export function PatientAssessmentPhase() {
   const [assessmentAction, setAssessmentAction] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'Lead' | 'Partner'>('Lead');
   
   const { 
     setPhase, 
@@ -25,8 +26,43 @@ export function PatientAssessmentPhase() {
       <h2 className="dispatch-title">Patient Assessment</h2>
       {!assessmentAction ? (
         <>
+          <div style={{ display: 'flex', gap: '32px', marginBottom: '24px', borderBottom: '1px solid var(--border)', width: '100%', justifyContent: 'center' }}>
+            <button 
+              onClick={() => setActiveTab('Lead')}
+              style={{ 
+                padding: '12px 24px', 
+                background: 'none', 
+                border: 'none', 
+                borderBottom: activeTab === 'Lead' ? '2px solid var(--primary)' : '2px solid transparent',
+                color: activeTab === 'Lead' ? 'var(--text-bright)' : 'var(--text-muted)',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '1.1rem',
+                transition: 'all 0.2s'
+              }}
+            >
+              Lead
+            </button>
+            <button 
+              onClick={() => setActiveTab('Partner')}
+              style={{ 
+                padding: '12px 24px', 
+                background: 'none', 
+                border: 'none', 
+                borderBottom: activeTab === 'Partner' ? '2px solid var(--primary)' : '2px solid transparent',
+                color: activeTab === 'Partner' ? 'var(--text-bright)' : 'var(--text-muted)',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '1.1rem',
+                transition: 'all 0.2s'
+              }}
+            >
+              Partner
+            </button>
+          </div>
+
           <p className="scenario-desc">
-            Select an assessment to perform on the patient.
+            Select an assessment or action for the {activeTab} to perform.
           </p>
           <div className="options-grid">
             <button 
