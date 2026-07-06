@@ -50,15 +50,6 @@
   animation: pulse 2s infinite ease-in-out;
 }
 
-.system-status {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--success);
-  background-color: var(--success-glow);
-  border: 1px solid rgba(0, 255, 157, 0.3);
-  padding: 4px 10px;
-  border-radius: 4px;
-}
 
 .monitor-body {
   padding: 32px 24px;
