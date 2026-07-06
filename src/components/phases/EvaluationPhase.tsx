@@ -87,16 +87,18 @@ export function EvaluationPhase() {
   const feedback = evaluatePerformance();
 
   return (
-    <>
-      <h2 className="dispatch-title">Scenario Complete</h2>
-      
-      <p className="scenario-desc" style={{ marginBottom: '32px' }}>
-        Paramedics have arrived on scene and taken over responsibility for the patient. 
-        Your initial assessment and interventions are complete.
-      </p>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', minHeight: 0 }}>
+      <div style={{ flexShrink: 0 }}>
+        <h2 className="dispatch-title">Scenario Complete</h2>
+        
+        <p className="scenario-desc" style={{ marginBottom: '16px', marginLeft: 'auto', marginRight: 'auto' }}>
+          Paramedics have arrived on scene and taken over responsibility for the patient. 
+          Your initial assessment and interventions are complete.
+        </p>
+      </div>
 
-      <div style={{ backgroundColor: 'var(--bg-dark)', border: '1px solid var(--border)', borderRadius: '8px', padding: '24px', marginBottom: '32px', textAlign: 'left' }}>
-        <h3 style={{ color: 'var(--text-bright)', marginBottom: '16px', fontSize: '1.2rem' }}>Performance Evaluation</h3>
+      <div style={{ backgroundColor: 'var(--bg-dark)', border: '1px solid var(--border)', borderRadius: '8px', padding: '24px', marginBottom: '16px', textAlign: 'left', flex: 1, minHeight: 0, overflowY: 'auto' }}>
+        <h3 style={{ color: 'var(--text-bright)', marginBottom: '16px', fontSize: '1.2rem', marginTop: 0 }}>Performance Evaluation</h3>
         {feedback.length === 0 ? (
           <div style={{ color: 'var(--success)', fontWeight: 'bold' }}>
             Excellent work! All protocols were followed correctly.
@@ -110,7 +112,7 @@ export function EvaluationPhase() {
         )}
       </div>
 
-      <div className="options-grid" style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+      <div className="options-grid" style={{ width: '100%', maxWidth: '600px', margin: '0 auto', flexShrink: 0 }}>
         <button 
           className="option-btn" 
           onClick={() => resetScenario(false)}
@@ -125,6 +127,6 @@ export function EvaluationPhase() {
           Complete Scenario (Home)
         </button>
       </div>
-    </>
+    </div>
   );
 }
