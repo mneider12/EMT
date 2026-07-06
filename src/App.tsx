@@ -2,8 +2,37 @@ import { useState, useEffect } from 'react';
 import { VitalsMonitor } from './components/VitalsMonitor';
 import { InventoryHUD } from './components/InventoryHUD';
 import { ScenarioScreen } from './components/ScenarioScreen';
-import { ScenarioProvider } from './context/ScenarioContext';
+import { ScenarioProvider, useScenario } from './context/ScenarioContext';
 import './App.css';
+
+function HeaderControls() {
+  const { resetScenario } = useScenario();
+
+  return (
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <button 
+        style={{ padding: '6px 12px', background: 'var(--bg-dark)', color: 'var(--text-bright)', border: '1px solid var(--border)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: '12px', fontWeight: 'bold' }}
+        onClick={() => {
+          if (window.confirm('Are you sure you want to reset the scenario? All progress will be lost.')) {
+            resetScenario(false);
+          }
+        }}
+      >
+        Reset Scenario
+      </button>
+      <button 
+        style={{ padding: '6px 12px', background: 'var(--bg-dark)', color: 'var(--text-bright)', border: '1px solid var(--border)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: '12px', fontWeight: 'bold' }}
+        onClick={() => {
+          if (window.confirm('Are you sure you want to go home? All progress will be lost.')) {
+            resetScenario(true);
+          }
+        }}
+      >
+        Home
+      </button>
+    </div>
+  );
+}
 
 function App() {
   const [timestamp, setTimestamp] = useState('');
@@ -25,6 +54,7 @@ function App() {
           {/* Header */}
           <div className="monitor-header">
             <div className="system-title">EMT Scenario Trainer</div>
+            <HeaderControls />
           </div>
 
           {/* Body */}

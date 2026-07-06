@@ -52,6 +52,7 @@ interface ScenarioContextType {
   setCprConfig: (config: CPRConfig | null) => void;
   activeRole: 'Lead' | 'Partner';
   setActiveRole: (role: 'Lead' | 'Partner') => void;
+  resetScenario: (returnToHome: boolean) => void;
 }
 
 const ScenarioContext = createContext<ScenarioContextType | undefined>(undefined);
@@ -100,6 +101,26 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const resetScenario = (returnToHome: boolean) => {
+    setPhase(returnToHome ? 'INITIALIZATION' : 'DISPATCH');
+    setSelectedPPE([]);
+    setCompletedActions([]);
+    setEquipmentState({
+      selected: [],
+      applied: [],
+      bagContents: ['Blood Pressure Cuff', 'Pulse Oximeter']
+    });
+    setVitalsAssessed({
+      heartRate: false,
+      bloodPressure: false,
+      spo2: false,
+      respiration: false
+    });
+    setImpressionRevealed(false);
+    setCprConfig(null);
+    setActiveRole('Lead');
+  };
+
   return (
     <ScenarioContext.Provider value={{
       phase, setPhase,
@@ -109,7 +130,8 @@ export function ScenarioProvider({ children }: { children: ReactNode }) {
       vitalsAssessed, setVitalsAssessed,
       impressionRevealed, setImpressionRevealed,
       cprConfig, setCprConfig,
-      activeRole, setActiveRole
+      activeRole, setActiveRole,
+      resetScenario
     }}>
       {children}
     </ScenarioContext.Provider>
